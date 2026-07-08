@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تست Cloudinary - نسخه ۲</title>
+<style>
+body{font-family:system-ui;max-width:500px;margin:40px auto;padding:20px;background:#111;color:#eee;}
+h2{margin-bottom:5px;}
+.sub{color:#8b92a8;font-size:13px;margin-bottom:20px;}
+input,button{display:block;width:100%;padding:14px;margin:10px 0;border-radius:10px;border:1px solid #333;background:#222;color:#fff;font-size:15px;box-sizing:border-box;}
+button{background:#2563EB;cursor:pointer;border:none;font-weight:700;font-size:16px;}
+button:hover{background:#1d4ed8;}
+button:disabled{opacity:0.5;cursor:not-allowed;}
+#log{margin-top:15px;font-family:monospace;font-size:12px;line-height:1.8;}
+.log-line{padding:4px 8px;margin:2px 0;border-radius:4px;}
+.log-info{background:#1a2a3a;color:#60a5fa;}
+.log-ok{background:#0a3d0a;color:#4ade80;}
+.log-err{background:#3d0a0a;color:#f87171;}
+img{max-width:100%;margin-top:15px;border-radius:10px;border:2px solid #22c55e;}
+</style>
+</head>
+<body>
+
+<h2>🖼️ تست Cloudinary</h2>
+<div class="sub">
+Cloud: <b>hwoz1nes</b> | Preset: <b>messenger_uploads</b><br>
+🔴 حتماً <b>F12</b> رو بزن و تب <b>Console</b> و <b>Network</b> رو چک کن!
+</div>
+
+<input type="file" id="fileInput" accept="image/*">
+<button id="btn" onclick="test()">📤 آپلود تست</button>
+<div id="log"></div>
+
+<script>
+function addLog(msg, cls) {
+  const d = document.getElementById('log');
+  const el = document.createElement('div');
+  el.className = 'log-line ' + cls;
+  el.textContent = '[' + new Date().toLocaleTimeString() + '] ' + msg;
+  d.appendChild(el);
+}
+
+async function test() {
+  const log = document.getElementById('log');
+  log.innerHTML = '';
+  const btn = document.getElementById('btn');
+  const file = document.getElementById('fileInput').files[0];
+
+  if (!file) { addLog('❌ عکس انتخاب نشده!', 'log-err'); return; }
+
+  addLog('📎 فایل: ' + file.name + ' (' + (file.size/1024).toFixed(1) + ' KB)', 'log-info');
+  addLog('📝 نوع: ' + file.type, 'log-info');
+
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', 'messenger_uploads');
+
+  btn.disabled = true;
+  btn.textContent = '⏳ در حال آپلود...';
+
+  const start = Date.now();
+  addLog('🔄 ارسال به Cloudinary...', 'log-info');
+
+  // با timeout
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 30000);
+
+  try {
+    const res = await fetch('https://api.cloudinary.com/v1_1/hwoz1nes/upload', {
+      method: 'POST',
+      body: fd,
+      signal: controller.signal
+    });
+
+    clearTimeout(timeout);
+    const elapsed = ((Date.now() - start) / 1000).toFixed(1);
+    addLog('⏱ پاسخ بعد از ' + elapsed + ' ثانیه | status: ' + res.status, 'log-info');
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      addLog('❌ خطای HTTP ' + res.status, 'log-err');
+      addLog(JSON.stringify(data, null, 2), 'log-err');
+      addLog('📌 راهنمایی: چک کن Upload Preset وجود داره و Unsigned هست', 'log-err');
+    } else {
+      addLog('✅ آپلود موفق!', 'log-ok');
+      addLog('🔗 ' + data.secure_url, 'log-ok');
+      
+      const img = document.createElement('img');
+      img.src = data.secure_url;
+      document.getElementById('log').appendChild(img);
+    }
+  } catch(err) {
+    clearTimeout(timeout);
+    addLog('💥 خطا: ' + err.name + ' — ' + err.message, 'log-err');
+    
+    if (err.name === 'AbortError') {
+      addLog('⏰ timeout شد! (۳۰ ثانیه)', 'log-err');
+      addLog('📌 احتمالاً مشکل شبکه یا CORS هست', 'log-err');
+    }
+    if (err.name === 'TypeError' && err.message.includes('NetworkError')) {
+      addLog('📌 احتمالاً CORS بلاک شده یا اینترنت قطعه', 'log-err');
+    }
+  }
+
+  btn.disabled = false;
+  btn.textContent = '📤 آپلود تست';
+}
+</script>
+
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1814e57ffcf4d97',t:'MTc4MzUzNjk1Ng=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
