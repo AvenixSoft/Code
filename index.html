@@ -94,8 +94,8 @@
   --border-hover:rgba(0,0,0,0.18);
   --header-bg:rgba(255,255,255,0.72);
   --nav-shadow:0 10px 28px rgba(0,0,0,0.12);
-  --immersive-top:#0A84FF;
-  --immersive-top-dark:#0070E0;
+  --immersive-top:#4A9BCD;
+  --immersive-top-dark:#3E86B8;
   --tone:#007AFF;
   --tone-2:#5AC8FA;
   --tone-soft:rgba(0,122,255,0.12);
@@ -187,7 +187,7 @@ input:focus-visible,textarea:focus-visible{outline:none}
 .header-left{display:flex;align-items:center;gap:12px;min-width:0}
 .header-titles{display:flex;flex-direction:column;gap:1px;min-width:0}
 .header-greeting-text{font-size:10.5px;color:var(--text-muted);font-weight:650;text-transform:uppercase;letter-spacing:0.5px}
-.mobile-frame.immersive .header-greeting-text{color:rgba(255,255,255,0.78);text-transform:none;letter-spacing:0;font-size:12px;font-weight:600}
+.mobile-frame.immersive .header-greeting-text{color:rgba(255,255,255,0.90);text-transform:none;letter-spacing:0;font-size:12px;font-weight:600}
 .header-user-name{
   overflow:hidden;font-size:clamp(16px,4.6vw,18px);font-weight:800;color:var(--text-primary);
   letter-spacing:-0.3px;text-overflow:ellipsis;white-space:nowrap;
@@ -215,10 +215,10 @@ input:focus-visible,textarea:focus-visible{outline:none}
 
 /* immersive stage background */
 .mobile-frame.immersive{
-  background:linear-gradient(180deg,var(--immersive-top) 0px,var(--immersive-top) 300px,var(--bg-main) 400px,var(--bg-main) 100%)!important;
+  background:linear-gradient(180deg,var(--immersive-top) 0px,var(--immersive-top) 380px,var(--bg-main) 600px,var(--bg-main) 100%)!important;
 }
 [data-theme="dark"] .mobile-frame.immersive{
-  background:linear-gradient(180deg,var(--immersive-top-dark) 0px,var(--immersive-top-dark) 300px,var(--bg-main) 400px,var(--bg-main) 100%)!important;
+  background:linear-gradient(180deg,var(--immersive-top-dark) 0px,var(--immersive-top-dark) 380px,var(--bg-main) 600px,var(--bg-main) 100%)!important;
 }
 .mobile-frame.immersive .main-content{padding-top:0;margin-top:0;background:transparent}
 
@@ -247,7 +247,7 @@ input:focus-visible,textarea:focus-visible{outline:none}
 }
 .bottom-nav-fab{
   pointer-events:auto;width:58px;height:58px;flex:0 0 auto;display:grid;place-items:center;color:#fff;
-  background:linear-gradient(145deg,#3B82F6 0%,#2563EB 45%,#1D4ED8 100%);
+  background:var(--accent-gradient);
   border-radius:50%;
   box-shadow:0 14px 28px rgba(37,99,235,0.42),0 4px 10px rgba(37,99,235,0.22),inset 0 1px 0 rgba(255,255,255,0.35);
   transition:var(--transition-spring);
@@ -258,7 +258,7 @@ input:focus-visible,textarea:focus-visible{outline:none}
 .bottom-nav-item{
   pointer-events:auto;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:0;
   flex:1 1 0;min-width:0;height:52px;margin:0;padding:0 4px;
-  color:#64748B;font-size:0;font-weight:700;position:relative;border-radius:999px;
+  color:var(--text-muted);font-size:0;font-weight:700;position:relative;border-radius:999px;
   transition:var(--transition-spring);overflow:hidden;
 }
 [data-theme="dark"] .bottom-nav-item{color:#94A3B8}
@@ -270,15 +270,15 @@ input:focus-visible,textarea:focus-visible{outline:none}
   transition:max-width .35s cubic-bezier(.16,1,.3,1),opacity .25s ease,transform .35s cubic-bezier(.16,1,.3,1);
 }
 .bottom-nav-item.active{
-  flex:1.55 1 0;color:#0F172A;background:#fff;font-weight:800;
+  flex:1.55 1 0;color:var(--accent-primary);background:var(--chip-bg-strong);font-weight:800;
   box-shadow:0 8px 18px rgba(15,23,42,0.10),0 1px 3px rgba(15,23,42,0.06);
   gap:6px;padding:0 12px 0 6px;
 }
 [data-theme="dark"] .bottom-nav-item.active{color:#F8FAFC;background:rgba(255,255,255,0.12);box-shadow:0 8px 18px rgba(0,0,0,0.25)}
-.bottom-nav-item.active .bottom-nav-ico{color:#0F172A}
+.bottom-nav-item.active .bottom-nav-ico{color:var(--accent-primary)}
 [data-theme="dark"] .bottom-nav-item.active .bottom-nav-ico{color:#F8FAFC}
 .bottom-nav-item.active .bottom-nav-label{max-width:72px;opacity:1;transform:translateX(0);margin-left:2px}
-.bottom-nav-item:not(.active):hover{color:#0F172A;background:rgba(15,23,42,0.04)}
+.bottom-nav-item:not(.active):hover{color:var(--text-primary);background:var(--chip-bg)}
 [data-theme="dark"] .bottom-nav-item:not(.active):hover{color:#F8FAFC;background:rgba(255,255,255,0.06)}
 .bottom-nav-item:active{transform:scale(.94)}
 @media (min-width:640px){.bottom-nav{max-width:412px}}
@@ -356,19 +356,16 @@ input:focus-visible,textarea:focus-visible{outline:none}
 .hero-value{
   display:block;margin:8px 4px 8px;color:#fff;font-size:clamp(26px,8vw,34px);font-weight:850;line-height:1.12;letter-spacing:-1.2px;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  text-shadow:0 2px 0 rgba(255,255,255,0.12),0 8px 32px rgba(15,40,120,0.35),0 0 60px rgba(147,197,253,0.35);
-  background:linear-gradient(180deg,#FFFFFF 10%,#E0EFFF 70%,#BFDBFE 100%);
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 10px 24px rgba(15,40,120,0.28));
+  text-shadow:0 2px 12px rgba(15,40,90,0.45),0 8px 32px rgba(15,40,120,0.30);
 }
 @supports not (-webkit-background-clip:text){
   .hero-value{color:#fff!important;-webkit-text-fill-color:#fff;background:none}
 }
 .hero-trend{
   display:inline-flex;align-items:center;gap:7px;margin:0 4px 18px;padding:7px 14px 7px 10px;
-  color:#ECFDF5;background:linear-gradient(135deg,rgba(16,185,129,0.32),rgba(52,211,153,0.18));
-  border:1px solid rgba(167,243,208,0.35);border-radius:999px;font-size:12.5px;font-weight:700;
-  box-shadow:0 8px 20px rgba(6,78,59,0.18),inset 0 1px 0 rgba(255,255,255,0.22);
+  color:rgba(255,255,255,0.94);background:rgba(255,255,255,0.16);
+  border:1px solid rgba(255,255,255,0.30);border-radius:999px;font-size:12.5px;font-weight:700;
+  box-shadow:0 8px 20px rgba(15,40,120,0.16),inset 0 1px 0 rgba(255,255,255,0.22);
   max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .hero-trend svg{width:12px;height:12px;flex:0 0 auto}
@@ -383,19 +380,21 @@ input:focus-visible,textarea:focus-visible{outline:none}
 .hero-pill:hover{transform:translateY(-2px);box-shadow:0 18px 34px rgba(15,40,120,0.28),0 2px 0 rgba(255,255,255,0.95) inset}
 .hero-pill:active{transform:scale(.96)}
 .hero-pill svg{width:15px;height:15px}
-.hero-pill .pill-ico{width:26px;height:26px;display:grid;place-items:center;border-radius:50%;background:rgba(37,99,235,0.08);color:#1E3A8A;flex:0 0 auto}
+.hero-pill .pill-ico{width:26px;height:26px;display:grid;place-items:center;border-radius:50%;background:rgba(0,122,255,0.10);color:#007AFF;flex:0 0 auto}
 .hero-pill .pill-ico svg{stroke:currentColor;fill:none}
 .hero-fab{
   width:52px;height:52px;flex:0 0 auto;display:grid;place-items:center;color:#fff;
-  background:linear-gradient(145deg,#1E293B 0%,#0B1220 55%,#020617 100%);
-  border:1px solid rgba(255,255,255,0.14);border-radius:18px;
-  box-shadow:0 14px 28px rgba(2,6,23,0.4),0 1px 0 rgba(255,255,255,0.18) inset;
+  background:rgba(10,30,70,0.28);
+  border:1px solid rgba(255,255,255,0.30);border-radius:18px;
+  box-shadow:0 14px 28px rgba(15,40,120,0.22),0 1px 0 rgba(255,255,255,0.22) inset;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   transition:var(--transition-spring);
 }
 .hero-fab:hover{transform:translateY(-2px) scale(1.03)}
 .hero-fab:active{transform:scale(.92)}
 .hero-fab svg{width:20px;height:20px;stroke:#fff}
-.hero-fab.liked svg{fill:#EC4899;stroke:#EC4899}
+.hero-fab.liked{background:rgba(255,255,255,0.95);border-color:transparent}
+.hero-fab.liked svg{fill:#FF2D55;stroke:#FF2D55}
 
 /* white content sheet that overlaps the blue hero */
 .home-sheet{
@@ -423,9 +422,9 @@ input:focus-visible,textarea:focus-visible{outline:none}
 [data-theme="dark"] .home-stat-tile{background:var(--card-bg);border-color:var(--border-glass);box-shadow:0 10px 22px rgba(0,0,0,0.18)}
 .home-stat-icon{width:32px;height:32px;display:grid;place-items:center;border-radius:12px}
 .home-stat-icon svg{width:16px;height:16px;stroke:currentColor}
-.home-stat-tile.songs .home-stat-icon{color:#059669;background:rgba(16,185,129,0.12)}
-.home-stat-tile.playlists .home-stat-icon{color:#2563EB;background:rgba(37,99,235,0.12)}
-.home-stat-tile.liked .home-stat-icon{color:#E11D48;background:rgba(244,63,94,0.12)}
+.home-stat-tile.songs .home-stat-icon{color:#34C759;background:rgba(52,199,89,0.14)}
+.home-stat-tile.playlists .home-stat-icon{color:#007AFF;background:rgba(0,122,255,0.12)}
+.home-stat-tile.liked .home-stat-icon{color:#FF3B30;background:rgba(255,59,48,0.13)}
 .home-stat-label{color:var(--text-muted);font-size:10px;font-weight:700}
 .home-stat-value{overflow:hidden;color:var(--text-primary);font-size:17px;font-weight:800;letter-spacing:-0.25px;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
 
@@ -437,7 +436,7 @@ input:focus-visible,textarea:focus-visible{outline:none}
 .section-title{color:var(--text-primary);font-size:17px;font-weight:800;line-height:1.3;letter-spacing:-0.4px}
 .section-link{
   min-height:32px;display:inline-flex;align-items:center;gap:4px;padding:0 10px;
-  color:#2563EB;background:rgba(37,99,235,0.08);border-radius:999px;font-size:12px;font-weight:750;flex:0 0 auto;
+  color:var(--accent-primary);background:var(--tone-soft);border-radius:999px;font-size:12px;font-weight:750;flex:0 0 auto;
 }
 [data-theme="dark"] .section-link{color:var(--tone);background:var(--tone-soft)}
 .section-link svg{width:13px;height:13px}
@@ -448,7 +447,7 @@ input:focus-visible,textarea:focus-visible{outline:none}
 .quick-primary{
   position:relative;isolation:isolate;overflow:hidden;min-height:88px;display:flex;align-items:center;gap:13px;
   padding:15px 14px;color:#fff;text-align:left;
-  background:radial-gradient(circle at 94% 8%,rgba(186,230,253,0.28),transparent 32%),radial-gradient(circle at 6% 110%,rgba(129,140,248,0.28),transparent 38%),linear-gradient(135deg,#4338CA 0%,#4F46E5 46%,#2563EB 100%);
+  background:radial-gradient(circle at 94% 8%,rgba(255,255,255,0.22),transparent 34%),radial-gradient(circle at 6% 110%,rgba(90,200,250,0.30),transparent 40%),linear-gradient(135deg,#0A84FF 0%,#5AC8FA 100%);
   border:1px solid rgba(255,255,255,0.18);border-radius:22px;
   box-shadow:0 16px 32px rgba(67,56,202,0.24),inset 0 1px 0 rgba(255,255,255,0.2);
 }
@@ -481,9 +480,9 @@ input:focus-visible,textarea:focus-visible{outline:none}
 .quick-tile:active{transform:scale(.97)}
 .quick-tile-icon{width:36px;height:36px;display:grid;place-items:center;border-radius:12px}
 .quick-tile-icon svg{width:18px;height:18px;stroke:currentColor}
-.quick-tile[data-tone="green"] .quick-tile-icon{color:#059669;background:rgba(16,185,129,0.13)}
-.quick-tile[data-tone="blue"] .quick-tile-icon{color:#0284C7;background:rgba(14,165,233,0.13)}
-.quick-tile[data-tone="amber"] .quick-tile-icon{color:#D97706;background:rgba(245,158,11,0.14)}
+.quick-tile[data-tone="green"] .quick-tile-icon{color:#34C759;background:rgba(52,199,89,0.14)}
+.quick-tile[data-tone="blue"] .quick-tile-icon{color:#007AFF;background:rgba(0,122,255,0.12)}
+.quick-tile[data-tone="amber"] .quick-tile-icon{color:#FF9500;background:rgba(255,149,0,0.14)}
 .quick-tile-copy{min-width:0;width:100%}
 .quick-tile-copy strong{display:block;overflow:hidden;color:var(--text-primary);font-size:12px;font-weight:800;letter-spacing:-0.2px;text-overflow:ellipsis;white-space:nowrap}
 .quick-tile-copy em{display:block;margin-top:3px;color:var(--text-muted);font-size:9.5px;font-style:normal;font-weight:500;line-height:1.4}
@@ -508,9 +507,9 @@ input:focus-visible,textarea:focus-visible{outline:none}
 .song-row:hover .song-actions,.song-actions.open{opacity:1}
 .mini-btn{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;color:var(--text-secondary)}
 .mini-btn:hover{color:var(--text-primary);background:var(--chip-bg)}
-.mini-btn.liked{color:#EC4899}
+.mini-btn.liked{color:#FF2D55}
 .mini-btn svg{width:16px;height:16px;stroke:currentColor}
-.mini-btn.liked svg{fill:#EC4899}
+.mini-btn.liked svg{fill:#FF2D55}
 
 /* equalizer */
 .eq{display:inline-flex;align-items:flex-end;gap:2px;height:13px;width:15px;flex:0 0 auto}
@@ -546,6 +545,67 @@ input:focus-visible,textarea:focus-visible{outline:none}
 .media-card .mc-meta{font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px}
 .media-card .mc-actions{position:absolute;z-index:3;top:10px;right:10px;display:flex;gap:6px}
 
+/* =========================================================
+   LIBRARY — header, quick grid, segmented, media grid
+   ========================================================= */
+.lib-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:8px 10px 16px}
+.lib-header .lh-titles{min-width:0}
+.lib-title{font-size:26px;font-weight:850;letter-spacing:-0.8px;color:var(--text-primary);line-height:1.1}
+.lib-sub{font-size:12.5px;color:var(--text-muted);margin-top:4px;font-weight:550}
+.lib-add{width:44px;height:44px;flex:0 0 auto;border-radius:50%;background:var(--accent-gradient);color:#fff;display:grid;place-items:center;box-shadow:0 8px 20px var(--accent-glow);transition:var(--transition-spring)}
+.lib-add svg{width:20px;height:20px;stroke:#fff}
+.lib-add:active{transform:scale(.88)}
+
+.quick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0 10px 16px}
+.quick-card{position:relative;border-radius:16px;overflow:hidden;padding:12px;min-height:92px;display:flex;flex-direction:column;justify-content:flex-end;cursor:pointer;color:#fff;box-shadow:0 10px 22px rgba(0,0,0,0.16);border:1px solid var(--border-glass);transition:var(--transition-spring)}
+.quick-card:hover{transform:translateY(-2px)}
+.quick-card:active{transform:scale(.97)}
+.quick-card .qc-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.quick-card .qc-art.cover-fallback{position:absolute;inset:0;display:grid;place-items:center}
+.quick-card .qc-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.02) 40%,rgba(0,0,0,0.6) 100%)}
+.quick-card .qc-body{position:relative;z-index:2;display:flex;flex-direction:column;gap:2px;min-width:0}
+.quick-card .qc-name{font-size:13.5px;font-weight:800;letter-spacing:-0.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 3px rgba(0,0,0,0.35)}
+.quick-card .qc-meta{font-size:11px;color:rgba(255,255,255,0.82);font-weight:600}
+.quick-card.liked-tile{background:linear-gradient(135deg,#0A84FF 0%,#5AC8FA 100%);border:0}
+.quick-card.liked-tile .qc-icon{position:absolute;top:10px;left:12px;width:26px;height:26px;z-index:2;display:grid;place-items:center;border-radius:8px;background:rgba(255,255,255,0.26);color:#fff;backdrop-filter:blur(6px)}
+.quick-card.liked-tile .qc-icon svg{width:15px;height:15px;fill:#fff;stroke:#fff}
+.quick-card.add-tile{border-style:dashed;border-color:var(--border-hover);background:var(--chip-bg);color:var(--text-secondary);justify-content:center;align-items:center;box-shadow:none}
+.quick-card.add-tile:hover{border-color:var(--tone)}
+.quick-card.add-tile .qc-add-ico{width:34px;height:34px;border-radius:50%;background:var(--chip-bg-strong);display:grid;place-items:center;margin-bottom:6px;color:var(--tone)}
+.quick-card.add-tile .qc-add-ico svg{width:16px;height:16px;stroke:currentColor}
+.quick-card.add-tile .qc-add-label{font-size:11.5px;font-weight:750;color:var(--text-secondary)}
+
+.segmented{display:flex;margin:0 10px 14px;padding:4px;border-radius:12px;background:var(--chip-bg);border:1px solid var(--border-subtle)}
+.segmented .seg{flex:1;height:34px;border-radius:9px;display:grid;place-items:center;font-size:12.5px;font-weight:750;color:var(--text-secondary);transition:var(--transition-spring)}
+.segmented .seg.active{background:var(--card-bg);color:var(--text-primary);box-shadow:0 3px 10px rgba(0,0,0,0.12);border:1px solid var(--border-glass)}
+.segmented .seg:active{transform:scale(.96)}
+
+.lib-search{margin:0 10px 12px}
+.lib-sort{margin:0 10px 12px}
+
+.media-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0 10px 8px}
+.media-grid .media-card{flex:none;width:100%;height:auto;aspect-ratio:1/1;padding:12px;scroll-snap-align:none}
+
+/* =========================================================
+   LIKED — gradient hero
+   ========================================================= */
+.liked-hero{position:relative;margin:6px 10px 16px;padding:18px 18px 16px;border-radius:24px;overflow:hidden;color:#fff;
+  background:linear-gradient(135deg,#FF2D55 0%,#FF5E3A 62%,#FF9500 135%);
+  box-shadow:0 16px 34px rgba(255,45,85,0.32);
+}
+.liked-hero .lh-glow{position:absolute;top:-60px;right:-40px;width:230px;height:230px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.32),transparent 62%);pointer-events:none}
+.liked-hero .lh-art{position:relative;width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,0.24);margin-bottom:14px;backdrop-filter:blur(8px)}
+.liked-hero .lh-art svg{width:24px;height:24px;fill:#fff;stroke:#fff}
+.liked-hero .lh-kicker{position:relative;font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;opacity:.88}
+.liked-hero .lh-title{position:relative;font-size:26px;font-weight:850;letter-spacing:-0.8px;margin-top:3px}
+.liked-hero .lh-meta{position:relative;font-size:12.5px;opacity:.92;margin-top:4px;font-weight:600}
+.liked-hero .lh-actions{position:relative;display:flex;align-items:center;gap:10px;margin-top:16px}
+.liked-hero .lh-play{display:flex;align-items:center;gap:8px;height:42px;padding:0 20px;border-radius:999px;background:#fff;color:#FF2D55;font-size:13.5px;font-weight:800;box-shadow:0 8px 20px rgba(0,0,0,0.18)}
+.liked-hero .lh-play svg{width:14px;height:14px;fill:#FF2D55;stroke:#FF2D55}
+.liked-hero .lh-shuffle{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,0.22);border:1px solid rgba(255,255,255,0.35);color:#fff}
+.liked-hero .lh-shuffle svg{width:18px;height:18px;stroke:#fff}
+
+/* =========================================================
 /* =========================================================
    DETAIL HERO (playlist / folder)
    ========================================================= */
@@ -1282,26 +1342,31 @@ function applyTones(track){
   const root = document.documentElement;
   const src = track && track.coverURL ? track.coverURL : null;
   computeColors(src).then(col => {
+    const isLight = document.documentElement.getAttribute('data-theme') !== 'dark';
     let tone, tone2;
     if (col){
       const [h,s,l] = rgbToHsl(...col.vibrant);
-      const s2 = Math.max(s, 0.5);
-      const l2 = Math.min(Math.max(l, 0.44), 0.62);
+      const s2 = Math.min(Math.max(s, 0.55), 0.95);
+      const l2 = Math.min(Math.max(l, 0.40), 0.55);
       tone = hslToRgb(h, s2, l2);
       const [h2] = rgbToHsl(...col.dominant);
-      tone2 = hslToRgb((h + (h2 - h)*0.4 + 40 + 360) % 360, Math.max(s*0.9,0.4), Math.min(Math.max(l,0.5),0.72));
+      tone2 = hslToRgb((h + (h2 - h)*0.35 + 30 + 360) % 360, Math.max(s*0.85,0.45), Math.min(Math.max(l,0.45),0.68));
     } else {
-      tone = [10,132,255]; tone2 = [90,200,250]; // Apple blue defaults
+      tone = isLight ? [0,122,255] : [10,132,255];  // #007AFF / #0A84FF
+      tone2 = [90,200,250];
     }
     const darken = (c, f) => c.map(v => Math.round(v*f));
+    const [th, ts] = rgbToHsl(...tone);
+    // immersive backdrop: soft pastel (light) / deep (dark); accent text keeps theme blue
+    const pastel = hslToRgb(th, Math.min(ts, 0.55), 0.57);
+    const immersiveTop = isLight ? pastel : darken(tone, 0.5);
     root.style.setProperty('--tone', cssRgb(tone[0],tone[1],tone[2]));
     root.style.setProperty('--tone-2', cssRgb(tone2[0],tone2[1],tone2[2]));
-    root.style.setProperty('--tone-soft', cssRgb(tone[0],tone[1],tone[2],0.16));
+    root.style.setProperty('--tone-soft', cssRgb(tone[0],tone[1],tone[2],0.15));
     root.style.setProperty('--tone-soft-2', cssRgb(tone2[0],tone2[1],tone2[2],0.12));
-    root.style.setProperty('--immersive-top', cssRgb(tone[0],tone[1],tone[2]));
-    root.style.setProperty('--immersive-top-dark', cssRgb(...darken(tone, 0.55)));
-    root.style.setProperty('--accent-primary', cssRgb(tone[0],tone[1],tone[2]));
-    root.style.setProperty('--accent-gradient', `linear-gradient(135deg, ${cssRgb(tone[0],tone[1],tone[2])} 0%, ${cssRgb(tone2[0],tone2[1],tone2[2])} 60%, ${cssRgb(...darken(tone,0.8))} 100%)`);
+    root.style.setProperty('--immersive-top', cssRgb(immersiveTop[0],immersiveTop[1],immersiveTop[2]));
+    root.style.setProperty('--immersive-top-dark', cssRgb(...darken(tone, 0.5)));
+    root.style.setProperty('--accent-gradient', `linear-gradient(135deg, ${cssRgb(tone[0],tone[1],tone[2])} 0%, ${cssRgb(tone2[0],tone2[1],tone2[2])} 60%, ${cssRgb(...darken(tone,0.75))} 100%)`);
     const meta = $('#meta-theme-color');
     if (meta) meta.setAttribute('content', cssRgb(...darken(tone, 0.5)));
   });
@@ -2031,57 +2096,110 @@ const UI = (() => {
   function renderLibrary(){
     const c = content();
     const seg = state.library.seg || 'songs';
-    const segChips = `
-      <div class="chips" style="margin:2px 10px 14px">
-        <button class="chip ${seg==='songs'?'active':''}" data-seg="songs">Songs</button>
-        <button class="chip ${seg==='playlists'?'active':''}" data-seg="playlists">Playlists</button>
-        <button class="chip ${seg==='folders'?'active':''}" data-seg="folders">Folders</button>
+    const likedCount = state.songs.filter(s=>s.liked).length;
+
+    // ---- quick-access tiles: Liked + recent collections ----
+    const cols = [
+      ...state.playlists.map(p => Object.assign({ _t:'playlist' }, p)),
+      ...state.folders.map(f => Object.assign({ _t:'folder' }, f))
+    ].sort((a,b) => (b.createdAt||0) - (a.createdAt||0)).slice(0, 5);
+
+    const quick = [];
+    quick.push(`<div class="quick-card liked-tile" data-goto="liked">
+        <span class="qc-icon">${ICONS.heartFill}</span>
+        <div class="qc-shade"></div>
+        <div class="qc-body">
+          <div class="qc-name">Liked Songs</div>
+          <div class="qc-meta">${fmtNum(likedCount)} song${likedCount===1?'':'s'}</div>
+        </div>
+      </div>`);
+    cols.forEach(it => {
+      const cover = it._t==='playlist' ? plCover(it) : foCover(it);
+      const label = it._t==='playlist' ? 'Playlist' : 'Folder';
+      quick.push(`<div class="quick-card" data-goto="${it._t}" data-id="${it.id}">
+        <div class="qc-art">${cover}</div>
+        <div class="qc-shade"></div>
+        <div class="qc-body">
+          <div class="qc-name">${escapeHtml(it.name)}</div>
+          <div class="qc-meta">${label} · ${fmtNum(it.songIds.length)} song${it.songIds.length===1?'':'s'}</div>
+        </div>
+      </div>`);
+    });
+    if (quick.length % 2 !== 0){
+      quick.push(`<div class="quick-card add-tile" id="qc-new"><span class="qc-add-ico">${ICONS.plus}</span><span class="qc-add-label">New</span></div>`);
+    }
+
+    const header = `
+      <div class="lib-header">
+        <div class="lh-titles">
+          <div class="lib-title">Your Library</div>
+          <div class="lib-sub">${fmtNum(state.songs.length)} songs · ${fmtNum(state.playlists.length)} playlists · ${fmtNum(state.folders.length)} folders</div>
+        </div>
+        <button class="lib-add" id="lib-add" title="Add">${ICONS.plus}</button>
+      </div>
+      <div class="quick-grid">${quick.join('')}</div>`;
+
+    const segControl = `
+      <div class="segmented">
+        <button class="seg ${seg==='songs'?'active':''}" data-seg="songs">Songs</button>
+        <button class="seg ${seg==='playlists'?'active':''}" data-seg="playlists">Playlists</button>
+        <button class="seg ${seg==='folders'?'active':''}" data-seg="folders">Folders</button>
       </div>`;
 
     let body = '';
     if (seg === 'songs'){
-      const list = sortSongs(state.songs);
+      const q = (state.library.filter || '').trim().toLowerCase();
+      const list = sortSongs(state.songs).filter(s => !q || s.title.toLowerCase().includes(q) || s.artist.toLowerCase().includes(q));
       body = `
-        <div class="section-heading">
-          <div><span class="section-kicker">Library</span><h2 class="section-title">All songs (${fmtNum(state.songs.length)})</h2></div>
-        </div>
-        <div class="chips">
-          <button class="chip ${state.library.sort==='added'?'active':''}" data-sort="added">Newest</button>
+        <div class="search-wrap lib-search">${ICONS.search}<input class="search-input" id="lib-filter" placeholder="Filter songs…" value="${escapeHtml(state.library.filter||'')}" autocomplete="off"></div>
+        <div class="chips lib-sort">
+          <button class="chip ${state.library.sort==='added'?'active':''}" data-sort="added">Recently added</button>
           <button class="chip ${state.library.sort==='title'?'active':''}" data-sort="title">Title</button>
           <button class="chip ${state.library.sort==='artist'?'active':''}" data-sort="artist">Artist</button>
-          <button class="chip" id="chip-dir">${state.library.dir==='desc'?'↓ Newest first':'↑ Oldest first'}</button>
+          <button class="chip" id="chip-dir">${state.library.dir==='desc'?'↓ Newest':'↑ Oldest'}</button>
         </div>
-        ${list.length ? songListHTML(list, '') : emptyState(ICONS.music, 'No songs yet', 'Add your music files to get started.', `<button class="btn-primary" id="empty-upload2">${ICONS.upload} Add Music</button>`)}`;
+        ${list.length ? songListHTML(list, '') : (state.songs.length ? emptyState(ICONS.search, 'No matches', 'No songs match that filter.') : emptyState(ICONS.music, 'No songs yet', 'Add your music files to get started.', `<button class="btn-primary" id="empty-upload2">${ICONS.upload} Add Music</button>`))}`;
     } else if (seg === 'playlists'){
       const ps = state.playlists;
-      body = `
-        <div class="section-heading">
-          <div><span class="section-kicker">Library</span><h2 class="section-title">Playlists (${fmtNum(ps.length)})</h2></div>
-          <button class="btn-ghost" id="pl-new" style="height:38px;padding:0 14px">${ICONS.plus} New</button>
-        </div>
-        ${ps.length ? `<div class="carousel">${ps.map(p => mediaCard(p,'playlist')).join('')}</div>` : emptyState(ICONS.list, 'No playlists yet', 'Create a playlist to organize your favorite tracks.', `<button class="btn-primary" id="pl-new2">${ICONS.plus} New Playlist</button>`)}`;
+      body = ps.length
+        ? `<div class="media-grid">${ps.map(p => mediaCard(p,'playlist')).join('')}</div>`
+        : emptyState(ICONS.list, 'No playlists yet', 'Create a playlist to organize your favorite tracks.', `<button class="btn-primary" id="pl-new2">${ICONS.plus} New Playlist</button>`);
     } else {
       const fs = state.folders;
-      body = `
-        <div class="section-heading">
-          <div><span class="section-kicker">Library</span><h2 class="section-title">Folders (${fmtNum(fs.length)})</h2></div>
-          <button class="btn-ghost" id="fo-new" style="height:38px;padding:0 14px">${ICONS.plus} New</button>
-        </div>
-        ${fs.length ? `<div class="carousel">${fs.map(f => mediaCard(f,'folder')).join('')}</div>` : emptyState(ICONS.folder, 'No folders yet', 'Create folders to group your songs.', `<button class="btn-primary" id="fo-new2">${ICONS.plus} New Folder</button>`)}`;
+      body = fs.length
+        ? `<div class="media-grid">${fs.map(f => mediaCard(f,'folder')).join('')}</div>`
+        : emptyState(ICONS.folder, 'No folders yet', 'Create folders to group your songs.', `<button class="btn-primary" id="fo-new2">${ICONS.plus} New Folder</button>`);
     }
 
-    c.innerHTML = `<div class="fade-in">${segChips}${body}</div>`;
+    c.innerHTML = `<div class="fade-in">${header}${segControl}${body}</div>`;
 
-    $$('#tab-content .chip[data-seg]').forEach(ch => ch.addEventListener('click', () => { state.library.seg = ch.dataset.seg; renderLibrary(); }));
+    // bindings
+    $('#lib-add').addEventListener('click', openAddSheet);
+    const qn = $('#qc-new'); if (qn) qn.addEventListener('click', openAddSheet);
+    $$('#tab-content .quick-card[data-goto]').forEach(qc => qc.addEventListener('click', () => {
+      const g = qc.dataset.goto;
+      if (g === 'liked') go('liked');
+      else if (g === 'playlist') go('playlist', { id: qc.dataset.id });
+      else if (g === 'folder') go('folder', { id: qc.dataset.id });
+    }));
+
+    $$('#tab-content .seg').forEach(s => s.addEventListener('click', () => { state.library.seg = s.dataset.seg; renderLibrary(); }));
+
+    const filt = $('#lib-filter');
+    if (filt) filt.addEventListener('input', e => {
+      state.library.filter = e.target.value;
+      renderLibrary();
+      const el = $('#lib-filter'); el.focus(); el.setSelectionRange(el.value.length, el.value.length);
+    });
+
     $$('#tab-content .chip[data-sort]').forEach(ch => ch.addEventListener('click', () => {
       if (state.library.sort === ch.dataset.sort) state.library.dir = state.library.dir==='desc'?'asc':'desc';
       else { state.library.sort = ch.dataset.sort; state.library.dir = 'desc'; }
       renderLibrary();
     }));
     const cd = $('#chip-dir'); if (cd) cd.addEventListener('click', () => { state.library.dir = state.library.dir==='desc'?'asc':'desc'; renderLibrary(); });
-    const pln = $('#pl-new'); if (pln) pln.addEventListener('click', ()=>openPlaylistSheet(null));
+
     const pln2 = $('#pl-new2'); if (pln2) pln2.addEventListener('click', ()=>openPlaylistSheet(null));
-    const fon = $('#fo-new'); if (fon) fon.addEventListener('click', ()=>openFolderSheet(null));
     const fon2 = $('#fo-new2'); if (fon2) fon2.addEventListener('click', ()=>openFolderSheet(null));
     const eu2 = $('#empty-upload2'); if (eu2) eu2.addEventListener('click', openFilePicker);
 
@@ -2106,16 +2224,44 @@ const UI = (() => {
   function renderLiked(){
     const c = content();
     const liked = sortSongs(state.songs.filter(s=>s.liked));
+    const total = liked.reduce((a,s) => a + (s.duration||0), 0);
+
     c.innerHTML = `<div class="fade-in">
-      <div class="section-heading">
-        <div><span class="section-kicker">Liked</span><h2 class="section-title">Liked songs (${fmtNum(liked.length)})</h2></div>
-        ${liked.length ? `<button class="btn-play-big" id="play-liked">${ICONS.play} Play all</button>` : ''}
+      <div class="liked-hero">
+        <div class="lh-glow"></div>
+        <div class="lh-art">${ICONS.heartFill}</div>
+        <div class="lh-kicker">Your Collection</div>
+        <div class="lh-title">Liked Songs</div>
+        <div class="lh-meta">${fmtNum(liked.length)} song${liked.length===1?'':'s'}${liked.length ? ' · ' + fmtTime(total) : ''}</div>
+        <div class="lh-actions">
+          <button class="lh-play" id="liked-play">${ICONS.play} Play</button>
+          <button class="lh-shuffle" id="liked-shuffle" title="Shuffle">${ICONS.shuffle}</button>
+        </div>
       </div>
-      ${liked.length ? songListHTML(liked,'') : emptyState(ICONS.heartFill,'Nothing liked yet','Tap the heart on any song to save it here.')}
+      ${liked.length ? `<div class="chips lib-sort">
+          <button class="chip ${state.library.sort==='added'?'active':''}" data-sort="added">Recently added</button>
+          <button class="chip ${state.library.sort==='title'?'active':''}" data-sort="title">Title</button>
+          <button class="chip ${state.library.sort==='artist'?'active':''}" data-sort="artist">Artist</button>
+        </div>` + songListHTML(liked, '') : emptyState(ICONS.heartFill, 'Nothing liked yet', 'Tap the heart on any song to save it here.')}
     </div>`;
-    const pl = $('#play-liked');
-    if (pl) pl.addEventListener('click', ()=>{ if (liked.length) Player.playTrack(liked[0], liked.map(s=>s.id), 0); });
-    bindSongList(c);
+
+    const lp = $('#liked-play');
+    if (lp) lp.addEventListener('click', ()=>{ if (liked.length) Player.playTrack(liked[0], liked.map(s=>s.id), 0); });
+    const ls = $('#liked-shuffle');
+    if (ls) ls.addEventListener('click', ()=>{
+      if (!liked.length) return;
+      state.settings.shuffle = true; DB.saveSettings(state.settings);
+      const ids = liked.map(s=>s.id);
+      const rnd = ids[Math.floor(Math.random()*ids.length)];
+      Player.playTrack(state.songs.find(s=>s.id===rnd), ids, ids.indexOf(rnd));
+      UI.renderPlayer();
+    });
+    $$('#tab-content .chip[data-sort]').forEach(ch => ch.addEventListener('click', () => {
+      if (state.library.sort === ch.dataset.sort) state.library.dir = state.library.dir==='desc'?'asc':'desc';
+      else { state.library.sort = ch.dataset.sort; state.library.dir = 'desc'; }
+      renderLiked();
+    }));
+    bindSongList(c, { contextIds: liked.map(s=>s.id) });
   }
 
   function renderPlaylistDetail(){
@@ -2695,6 +2841,7 @@ const UI = (() => {
   function toggleTheme(){
     state.settings.theme = state.settings.theme === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', state.settings.theme);
+    applyTones(Player.current);
     DB.saveSettings(state.settings);
     $('#theme-ico').innerHTML = state.settings.theme === 'dark'
       ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
@@ -2759,5 +2906,5 @@ window.TUNEO = { state, DB, Player, UI, importFiles, deleteSongs, parseID3v2, pa
 
 
 </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a326b54a9d75e347',t:'MTc4Nzk1NTY3Nw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
