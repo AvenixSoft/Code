@@ -114,15 +114,16 @@
 input,textarea,[contenteditable="true"]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
 html,body{scrollbar-width:none;-ms-overflow-style:none}
 html::-webkit-scrollbar,body::-webkit-scrollbar{width:0;height:0;display:none}
-html{width:100%;height:100%;background:var(--bg-main)}
+html{width:100%;height:100%;overflow:hidden;background:var(--bg-main)}
 html,body{
-  width:100%;min-height:100%;min-height:100dvh;
+  width:100%;height:100%;
   font-family:var(--font-main);
   background:var(--bg-main);
   color:var(--text-primary);
   font-size:clamp(14px,3.5vw,15px);
   line-height:1.5;
-  overflow-x:hidden;
+  overflow:hidden;
+  overscroll-behavior:none;
   user-select:none;
   -webkit-font-smoothing:antialiased;
   transition:background .6s ease;
@@ -142,11 +143,12 @@ input:focus-visible,textarea:focus-visible{outline:none}
 
 /* ---------------- APP FRAME (phone on desktop) ---------------- */
 .app-container{
-  width:100%;min-height:100vh;min-height:100dvh;
+  width:100%;height:100%;min-height:0;
   display:flex;justify-content:center;align-items:flex-start;
+  overflow:hidden;
 }
 .mobile-frame{
-  width:100%;max-width:100%;height:100vh;height:100dvh;min-height:100vh;min-height:100dvh;
+  width:100%;max-width:100%;height:100%;min-height:0;
   background:var(--bg-main);
   position:relative;display:flex;flex-direction:column;
   overflow:hidden;
@@ -2865,6 +2867,17 @@ const UI = (() => {
     const pinDock = () => {
       const nav = document.querySelector('.bottom-nav');
       const mp = document.querySelector('.mini-player');
+      const frame = document.getElementById('mobile-frame');
+      const vv = window.visualViewport;
+      const isMobile = !window.matchMedia('(min-width: 640px)').matches;
+      if (frame){
+        if (isMobile){
+          const h = (vv && vv.height) ? vv.height : (document.documentElement.clientHeight || window.innerHeight);
+          frame.style.height = h + 'px';
+        } else {
+          frame.style.height = '';
+        }
+      }
       if (nav) { void nav.offsetWidth; }
       if (mp) { void mp.offsetWidth; }
     };
@@ -2958,6 +2971,5 @@ window.TUNEO = { state, DB, Player, UI, importFiles, deleteSongs, parseID3v2, pa
 
 
 </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a32b11647840733f',t:'MTc4ODAwMTM5Mw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a32b25926e6edb87',t:'MTc4ODAwMjIxOQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
-
