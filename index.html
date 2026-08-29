@@ -155,11 +155,11 @@ input:focus-visible,textarea:focus-visible{outline:none}
   transition:background .6s ease;
 }
 @media (min-width:640px){
-  .app-container{padding:24px 0}
+  .app-container{padding:0}
   .mobile-frame{
-    max-width:440px;min-height:0;height:min(844px,calc(100dvh - 48px));
-    border-radius:46px;
-    border:1px solid var(--border-glass);
+    max-width:440px;min-height:0;height:100dvh;
+    border-radius:32px 32px 0 0;
+    border:1px solid var(--border-glass);border-bottom:0;
     box-shadow:0 0 60px rgba(0,0,0,0.45);
     overflow:hidden;
   }
@@ -223,7 +223,7 @@ input:focus-visible,textarea:focus-visible{outline:none}
    FLOATING PILL BOTTOM NAV + FAB
    ========================================================= */
 .bottom-nav{
-  position:absolute;left:0;right:0;bottom:max(8px,env(safe-area-inset-bottom,0px));margin:0 auto;
+  position:absolute;left:0;right:0;bottom:max(6px,env(safe-area-inset-bottom,0px));margin:0 auto;
   width:calc(100% - 22px);max-width:412px;
   display:flex;align-items:center;justify-content:center;gap:10px;
   z-index:100;pointer-events:none;
@@ -2961,5 +2961,5 @@ window.TUNEO = { state, DB, Player, UI, importFiles, deleteSongs, parseID3v2, pa
 
 
 </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a32b34b3887690a3',t:'MTc4ODAwMjgzOQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a32b4d004c5dc6e8',t:'MTc4ODAwMzgzNA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
