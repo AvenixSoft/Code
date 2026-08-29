@@ -155,7 +155,7 @@ input:focus-visible,textarea:focus-visible{outline:none}
 @media (min-width:640px){
   .app-container{padding:24px 0}
   .mobile-frame{
-    max-width:440px;height:min(844px,calc(100dvh - 48px));
+    max-width:440px;min-height:0;height:min(844px,calc(100dvh - 48px));
     border-radius:46px;
     border:1px solid var(--border-glass);
     box-shadow:0 0 60px rgba(0,0,0,0.45);
@@ -897,7 +897,6 @@ textarea.input{height:auto;padding:12px 14px;resize:none;line-height:1.6}
     <button class="np-btn" id="np-queue" title="Queue"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></button>
   </div>
 </div>
-</div>
 
 <!-- ============ SHEETS ============ -->
 <div class="modal-overlay" id="sheet-overlay">
@@ -922,8 +921,7 @@ textarea.input{height:auto;padding:12px 14px;resize:none;line-height:1.6}
   </div>
 </div>
 
-<div id="toasts"></div>
-<div id="drop-zone">
+<div id="toasts"></div><div id="drop-zone">
   <div>
     <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 20h16"/></svg>
     <div>Drop your music files</div>
@@ -2960,5 +2958,6 @@ window.TUNEO = { state, DB, Player, UI, importFiles, deleteSongs, parseID3v2, pa
 
 
 </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a32af9bccebda42e',t:'MTc4ODAwMDQyNA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a32b11647840733f',t:'MTc4ODAwMTM5Mw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
