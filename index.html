@@ -114,16 +114,15 @@
 input,textarea,[contenteditable="true"]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
 html,body{scrollbar-width:none;-ms-overflow-style:none}
 html::-webkit-scrollbar,body::-webkit-scrollbar{width:0;height:0;display:none}
-html{width:100%;height:100%;height:100dvh;overflow:hidden;background:var(--bg-main)}
+html{width:100%;height:100%;background:var(--bg-main)}
 html,body{
-  width:100%;height:100%;height:100dvh;
+  width:100%;min-height:100%;min-height:100dvh;
   font-family:var(--font-main);
   background:var(--bg-main);
   color:var(--text-primary);
   font-size:clamp(14px,3.5vw,15px);
   line-height:1.5;
-  overflow:hidden;
-  overscroll-behavior:none;
+  overflow-x:hidden;
   user-select:none;
   -webkit-font-smoothing:antialiased;
   transition:background .6s ease;
@@ -143,23 +142,22 @@ input:focus-visible,textarea:focus-visible{outline:none}
 
 /* ---------------- APP FRAME (phone on desktop) ---------------- */
 .app-container{
-  width:100%;height:100%;min-height:0;
+  width:100%;min-height:100vh;min-height:100dvh;
   display:flex;justify-content:center;align-items:flex-start;
-  overflow:hidden;
 }
 .mobile-frame{
-  width:100%;max-width:100%;height:100%;min-height:0;
+  width:100%;max-width:100%;height:100vh;height:100dvh;min-height:100vh;min-height:100dvh;
   background:var(--bg-main);
   position:relative;display:flex;flex-direction:column;
   overflow:hidden;
   transition:background .6s ease;
 }
 @media (min-width:640px){
-  .app-container{padding:0}
+  .app-container{padding:24px 0}
   .mobile-frame{
-    max-width:440px;min-height:0;height:100dvh;
-    border-radius:32px 32px 0 0;
-    border:1px solid var(--border-glass);border-bottom:0;
+    max-width:440px;height:min(844px,calc(100dvh - 48px));
+    border-radius:46px;
+    border:1px solid var(--border-glass);
     box-shadow:0 0 60px rgba(0,0,0,0.45);
     overflow:hidden;
   }
@@ -223,7 +221,7 @@ input:focus-visible,textarea:focus-visible{outline:none}
    FLOATING PILL BOTTOM NAV + FAB
    ========================================================= */
 .bottom-nav{
-  position:absolute;left:0;right:0;bottom:max(6px,env(safe-area-inset-bottom,0px));margin:0 auto;
+  position:absolute;left:0;right:0;bottom:max(14px,env(safe-area-inset-bottom,0px));margin:0 auto;
   width:calc(100% - 22px);max-width:412px;
   display:flex;align-items:center;justify-content:center;gap:10px;
   z-index:100;pointer-events:none;
@@ -284,7 +282,7 @@ input:focus-visible,textarea:focus-visible{outline:none}
    MINI PLAYER (Spotify player bar)
    ========================================================= */
 .mini-player{
-  position:absolute;left:0;right:0;bottom:max(84px,calc(72px + env(safe-area-inset-bottom,0px)));margin:0 auto;
+  position:absolute;left:0;right:0;bottom:max(88px,calc(76px + env(safe-area-inset-bottom,0px)));margin:0 auto;
   width:calc(100% - 22px);max-width:412px;z-index:99;
   display:none;align-items:center;gap:4px;color:#fff;
   padding:7px 8px;
@@ -899,6 +897,7 @@ textarea.input{height:auto;padding:12px 14px;resize:none;line-height:1.6}
     <button class="np-btn" id="np-queue" title="Queue"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></button>
   </div>
 </div>
+</div>
 
 <!-- ============ SHEETS ============ -->
 <div class="modal-overlay" id="sheet-overlay">
@@ -923,7 +922,8 @@ textarea.input{height:auto;padding:12px 14px;resize:none;line-height:1.6}
   </div>
 </div>
 
-<div id="toasts"></div><div id="drop-zone">
+<div id="toasts"></div>
+<div id="drop-zone">
   <div>
     <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 20h16"/></svg>
     <div>Drop your music files</div>
@@ -2865,7 +2865,6 @@ const UI = (() => {
     // Keep the floating dock (nav + mini player) pinned correctly on first paint,
     // incl. installed PWA where iOS can misplace fixed elements until a scroll.
     const pinDock = () => {
-      // Reflow the dock so it paints in its final position on the first paint.
       const nav = document.querySelector('.bottom-nav');
       const mp = document.querySelector('.mini-player');
       if (nav) { void nav.offsetWidth; }
@@ -2961,5 +2960,5 @@ window.TUNEO = { state, DB, Player, UI, importFiles, deleteSongs, parseID3v2, pa
 
 
 </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a32b4d004c5dc6e8',t:'MTc4ODAwMzgzNA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a32af9bccebda42e',t:'MTc4ODAwMDQyNA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
