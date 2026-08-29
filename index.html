@@ -114,9 +114,9 @@
 input,textarea,[contenteditable="true"]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
 html,body{scrollbar-width:none;-ms-overflow-style:none}
 html::-webkit-scrollbar,body::-webkit-scrollbar{width:0;height:0;display:none}
-html{width:100%;height:100%;overflow:hidden;background:var(--bg-main)}
+html{width:100%;height:100%;height:100dvh;overflow:hidden;background:var(--bg-main)}
 html,body{
-  width:100%;height:100%;
+  width:100%;height:100%;height:100dvh;
   font-family:var(--font-main);
   background:var(--bg-main);
   color:var(--text-primary);
@@ -223,7 +223,7 @@ input:focus-visible,textarea:focus-visible{outline:none}
    FLOATING PILL BOTTOM NAV + FAB
    ========================================================= */
 .bottom-nav{
-  position:absolute;left:0;right:0;bottom:max(14px,env(safe-area-inset-bottom,0px));margin:0 auto;
+  position:absolute;left:0;right:0;bottom:max(8px,env(safe-area-inset-bottom,0px));margin:0 auto;
   width:calc(100% - 22px);max-width:412px;
   display:flex;align-items:center;justify-content:center;gap:10px;
   z-index:100;pointer-events:none;
@@ -284,7 +284,7 @@ input:focus-visible,textarea:focus-visible{outline:none}
    MINI PLAYER (Spotify player bar)
    ========================================================= */
 .mini-player{
-  position:absolute;left:0;right:0;bottom:max(88px,calc(76px + env(safe-area-inset-bottom,0px)));margin:0 auto;
+  position:absolute;left:0;right:0;bottom:max(84px,calc(72px + env(safe-area-inset-bottom,0px)));margin:0 auto;
   width:calc(100% - 22px);max-width:412px;z-index:99;
   display:none;align-items:center;gap:4px;color:#fff;
   padding:7px 8px;
@@ -2865,19 +2865,9 @@ const UI = (() => {
     // Keep the floating dock (nav + mini player) pinned correctly on first paint,
     // incl. installed PWA where iOS can misplace fixed elements until a scroll.
     const pinDock = () => {
+      // Reflow the dock so it paints in its final position on the first paint.
       const nav = document.querySelector('.bottom-nav');
       const mp = document.querySelector('.mini-player');
-      const frame = document.getElementById('mobile-frame');
-      const vv = window.visualViewport;
-      const isMobile = !window.matchMedia('(min-width: 640px)').matches;
-      if (frame){
-        if (isMobile){
-          const h = (vv && vv.height) ? vv.height : (document.documentElement.clientHeight || window.innerHeight);
-          frame.style.height = h + 'px';
-        } else {
-          frame.style.height = '';
-        }
-      }
       if (nav) { void nav.offsetWidth; }
       if (mp) { void mp.offsetWidth; }
     };
@@ -2971,5 +2961,5 @@ window.TUNEO = { state, DB, Player, UI, importFiles, deleteSongs, parseID3v2, pa
 
 
 </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a32b25926e6edb87',t:'MTc4ODAwMjIxOQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a32b34b3887690a3',t:'MTc4ODAwMjgzOQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
