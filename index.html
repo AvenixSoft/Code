@@ -10463,6 +10463,36 @@ html.walio-booting body {
 .wallet-new-connect-view .external-wallet-status { min-height:18px;margin:3px 0 10px; }
 .wallet-new-cancel { display:block;width:100%;margin-top:10px;padding:11px;border:1px solid var(--border-glass);border-radius:14px;background:var(--glass-bg);color:var(--text-primary);font:inherit;font-size:13px;font-weight:650;cursor:pointer; }
 @media (max-width:380px) { .wallet-new-sheet { padding-left:16px;padding-right:16px; }.wallet-new-sheet .wallet-choice-option { grid-template-columns:38px minmax(0,1fr) 18px;gap:8px;padding:10px; } }
+
+/* Wallet inventory: connected crypto and manual cards are distinct groups. */
+.wallets-subsection { margin-top:22px; }
+.wallets-subsection-head { display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 2px 11px; }
+.wallets-subsection-head h3 { margin:0;color:var(--text-primary);font-size:14px;font-weight:750;letter-spacing:-.015em; }
+.wallets-subsection-count { min-width:24px;height:24px;display:grid;place-items:center;padding:0 7px;border:1px solid var(--border-glass);border-radius:9px;background:var(--glass-bg);color:var(--text-secondary);font-size:10px;font-weight:700; }
+.connected-wallets-subsection .external-crypto-wallet { margin:0 0 6px;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none; }
+.crypto-connected-card { padding:15px;border-radius:16px;border-color:var(--border-glass);background:linear-gradient(145deg,rgba(79,70,229,.055),var(--glass-bg) 65%); }
+.crypto-connected-head { display:flex;align-items:center;gap:11px;min-width:0; }
+.crypto-connected-icon { width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;border:1px solid rgba(79,70,229,.15);border-radius:14px;background:rgba(79,70,229,.1);color:var(--accent-primary); }
+[data-theme="dark"] .crypto-connected-icon { border-color:rgba(129,140,248,.22);background:rgba(99,102,241,.16);color:#a5b4fc; }
+.crypto-connected-meta { min-width:0;flex:1;display:flex;flex-direction:column;gap:3px; }
+.crypto-connected-meta strong { overflow:hidden;color:var(--text-primary);font-size:12px;font-weight:750;text-overflow:ellipsis;white-space:nowrap; }
+.crypto-connected-meta span { color:var(--text-muted);font:10px ui-monospace,SFMono-Regular,Menlo,monospace;direction:ltr;text-align:start; }
+.crypto-connected-network { max-width:115px;overflow:hidden;padding:6px 8px;border:1px solid var(--border-glass);border-radius:999px;background:var(--bg-sub);color:var(--text-secondary);font-size:9px;font-weight:700;text-overflow:ellipsis;white-space:nowrap; }
+.crypto-connected-value { display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 0 4px;padding:12px 13px;border:1px solid var(--border-subtle);border-radius:14px;background:var(--bg-sub); }
+.crypto-connected-value span { color:var(--text-muted);font-size:9px;font-weight:800;letter-spacing:.1em; }
+.crypto-connected-value strong { color:var(--text-primary);font-size:20px;font-weight:800;letter-spacing:-.035em; }
+.crypto-connected-card .external-wallet-assets { gap:2px; }
+.crypto-connected-card .external-wallet-asset { padding:10px 2px;border-color:var(--border-subtle); }
+.crypto-connected-card .external-wallet-actions { margin-top:11px; }
+.crypto-connected-card .external-wallet-btn { min-height:38px;border-radius:12px;font-size:11px; }
+.crypto-connected-card .external-wallet-btn.secondary:last-child { color:var(--text-secondary); }
+.external-wallet-empty { display:flex;align-items:center;gap:12px;padding:14px;border:1px dashed var(--border-glass);border-radius:16px;background:var(--glass-bg); }
+.external-wallet-empty-copy { min-width:0;flex:1;display:flex;flex-direction:column;gap:4px; }
+.external-wallet-empty-copy strong { color:var(--text-primary);font-size:11px;font-weight:750; }
+.external-wallet-empty-copy span { color:var(--text-secondary);font-size:10px;line-height:1.45; }
+.external-wallet-empty .external-wallet-btn { min-height:36px;padding:0 10px;border-radius:11px;font-size:10px;white-space:nowrap; }
+@media (max-width:380px) { .crypto-connected-head { flex-wrap:wrap; }.crypto-connected-network { margin-inline-start:auto; }.external-wallet-empty { align-items:flex-start;flex-wrap:wrap; }.external-wallet-empty .external-wallet-btn { margin-inline-start:54px; } }
+
 </style>
 <script>
 /*
@@ -12575,6 +12605,10 @@ class WalletManager {
     const externalSummary = window.walioExternalWallet?.getSummary?.() || null;
     const externalToman = window.walioExternalWallet?.getContributionToman?.() || 0;
     const totalBalance = offlineTotalBalance + externalToman;
+    const usdRate = Number(window.currency?.getRate?.('USD')?.rate) || 0;
+    const knownCryptoUsd = Number(externalSummary?.totalUsd);
+    const hasKnownCryptoUsd = !!externalSummary?.address && Number.isFinite(knownCryptoUsd) && (knownCryptoUsd > 0 || externalSummary.usdComplete === true);
+    const portfolioUsd = hasKnownCryptoUsd ? knownCryptoUsd + (usdRate > 0 ? offlineTotalBalance / usdRate : 0) : null;
     const now = new Date();
     const monthTx = transactions.filter(tx => {
       const d = new Date(tx.date);
@@ -12649,7 +12683,7 @@ class WalletManager {
             <span class="wallets-hero-label" data-i18n="portfolio_balance">${t('portfolio_balance')}</span>
             <button type="button" class="wallets-privacy-btn" id="wallets-toggle-privacy" aria-label="Toggle balance">${eyeSVG}</button>
           </div>
-          <strong class="wallets-hero-value" id="walio-portfolio-total" data-base-balance="${offlineTotalBalance}" data-hide-balance="${hideBalance ? '1' : '0'}">${formatMoney(totalBalance)}</strong>
+          <strong class="wallets-hero-value" id="walio-portfolio-total" data-base-balance="${offlineTotalBalance}" data-hide-balance="${hideBalance ? '1' : '0'}">${hideBalance ? '••••••••' : portfolioUsd !== null ? `≈ $${new Intl.NumberFormat(isFa ? 'fa-IR' : 'en-US', { maximumFractionDigits: 2 }).format(portfolioUsd)}${externalSummary?.usdComplete === false ? '+' : ''}` : formatMoney(totalBalance)}</strong>
           <div class="external-wallet-total-summary" id="walio-portfolio-crypto-summary" ${externalSummary?.address ? '' : 'hidden'}></div>
           <div class="wallets-hero-meta">
             <span class="wallets-hero-pill-stat">
@@ -12700,10 +12734,26 @@ class WalletManager {
               <span class="wallets-section-kicker" data-i18n="account_overview">${t('account_overview')}</span>
               <h2 class="wallets-section-title" data-i18n="all_wallets">${t('all_wallets')}</h2>
             </div>
-            <span class="wallets-section-count">${wallets.length}</span>
+            <span class="wallets-section-count" id="walio-all-wallet-count" data-offline-count="${wallets.length}">${wallets.length + (externalSummary?.address ? 1 : 0)}</span>
           </div>
 
-          <div class="wallets-stack">${listHTML}</div>
+          <section class="wallets-subsection connected-wallets-subsection" aria-labelledby="walio-connected-wallets-title">
+            <div class="wallets-subsection-head">
+              <h3 id="walio-connected-wallets-title">${isFa ? 'کیف پول‌های متصل' : 'Connected Wallets'}</h3>
+              <span class="wallets-subsection-count" id="walio-connected-wallet-count">${externalSummary?.address ? 1 : 0}</span>
+            </div>
+            <section class="external-crypto-wallet" id="walio-external-wallet" aria-label="Connected external crypto wallet">
+              <div id="walio-external-wallet-body" aria-live="polite"></div>
+            </section>
+          </section>
+
+          <section class="wallets-subsection cards-subsection" aria-labelledby="walio-cards-title">
+            <div class="wallets-subsection-head">
+              <h3 id="walio-cards-title">${isFa ? 'کارت‌ها' : 'Cards'}</h3>
+              <span class="wallets-subsection-count">${wallets.length}</span>
+            </div>
+            <div class="wallets-stack">${listHTML}</div>
+          </section>
         </div>
 
         <div id="walio-wallet-options" class="modal-overlay wallet-new-overlay" aria-hidden="true">
@@ -12751,10 +12801,6 @@ class WalletManager {
           </div>
         </div>
 
-        <!-- Connected external wallet details; independent from offline finance cards. -->
-        <section class="external-crypto-wallet" id="walio-external-wallet" hidden aria-label="Connected external crypto wallet">
-          <div id="walio-external-wallet-body" aria-live="polite"></div>
-        </section>
       </div>`;
 
     if (window.i18n) window.i18n.translateDOM();
@@ -17860,7 +17906,7 @@ window.addEventListener('DOMContentLoaded', () => {
   function summaryText(saved){
     if(!saved?.address)return '';
     const label=saved.label||txt('External wallet','کیف پول خارجی');
-    if(saved.usdComplete===false)return `${label} · ${txt('USD valuation incomplete; excluded from total','قیمت‌گذاری دلاری کامل نیست؛ در جمع کل لحاظ نشده است')}`;
+    if(saved.usdComplete===false)return `${label} · ${txt('USD estimate incomplete; partial value shown','قیمت دلاری کامل نیست؛ ارزش تقریبی نمایش داده می‌شود')}`;
     const usd=Number(saved.totalUsd)||0;
     const toman=getContributionToman();
     return `${label} · ≈ $${fmt(usd,2)} (${amountInToman(toman)})`;
@@ -17871,8 +17917,22 @@ window.addEventListener('DOMContentLoaded', () => {
       const node=document.getElementById(id);if(!node)return;
       const base=Number(node.dataset.baseBalance)||0;
       const hide=node.dataset.hideBalance==='1';
-      node.textContent=hide?'••••••••':(window.i18n?window.i18n.formatCurrency(base+getContributionToman(),'IRT'):`${fmt(base+getContributionToman())} Toman`);
+      if(hide){node.textContent='••••••••';return;}
+      if(id==='walio-portfolio-total'&&saved?.address&&Number.isFinite(Number(saved.totalUsd))){
+        const usdRate=Number(window.currency?.getRate?.('USD')?.rate)||0;
+        const cryptoUsd=Number(saved.totalUsd)||0;
+        if(cryptoUsd>0||saved.usdComplete===true){
+          const offlineUsd=usdRate>0?base/usdRate:0;
+          node.textContent='≈ $'+fmt(cryptoUsd+offlineUsd,2)+(saved.usdComplete===false?'+':'');
+          return;
+        }
+      }
+      const total=base+getContributionToman();
+      node.textContent=window.i18n?window.i18n.formatCurrency(total,'IRT'):`${fmt(total)} Toman`;
     });
+    const connectedCount=saved?.address?1:0;
+    const connectedBadge=document.getElementById('walio-connected-wallet-count');if(connectedBadge)connectedBadge.textContent=String(connectedCount);
+    const allBadge=document.getElementById('walio-all-wallet-count');if(allBadge)allBadge.textContent=String((Number(allBadge.dataset.offlineCount)||0)+connectedCount);
     ['walio-portfolio-crypto-summary','walio-home-crypto-summary'].forEach(id=>{
       const node=document.getElementById(id);if(!node)return;
       const hide=node.closest('#tab-home,#tab-wallets')?.querySelector('[data-hide-balance="1"]');
@@ -17897,18 +17957,32 @@ window.addEventListener('DOMContentLoaded', () => {
   function renderBase(){
     const box=el();if(!box)return;
     const saved=readSaved();
-    box.innerHTML=`<div class="external-wallet-connected" id="walio-wallet-card">
-      <div class="external-wallet-ident"><strong id="walio-wallet-address">${saved?.address?`${esc(saved.label||txt('External wallet','کیف پول خارجی'))} · ${short(saved.address)}`:txt('No external wallet connected','کیف پول رمزارزی متصل نیست')}</strong><span id="walio-wallet-network">${saved?.network?esc(saved.network):txt('Network pending','در انتظار شناسایی شبکه')}</span></div>
-      <div class="external-wallet-total" id="walio-wallet-total">${saved?.address?'—':' '}</div>
-      <div class="external-wallet-assets" id="walio-wallet-assets"></div>
-      <div class="external-wallet-actions"><button type="button" class="external-wallet-btn secondary" id="walio-wallet-refresh" ${saved?.address?'':'hidden'}>${txt('Refresh balance','به‌روزرسانی موجودی')}</button><button type="button" class="external-wallet-btn secondary" id="walio-wallet-disconnect" ${saved?.address?'':'hidden'}>${txt('Disconnect Wallet','قطع اتصال کیف پول')}</button></div>
-      <p class="external-wallet-status" id="walio-wallet-status" role="status"></p>
-      <p class="external-wallet-footnote">${txt('Read-only connection. Walio never creates a wallet, requests a recovery phrase, private key, or password, or signs/transfers assets.','اتصال فقط برای خواندن است. والیو کیف پول نمی‌سازد و عبارت بازیابی، کلید خصوصی یا رمز عبور نمی‌خواهد و تراکنشی امضا یا منتقل نمی‌کند.')}</p>
-    </div>`;
-    box.querySelector('#walio-wallet-refresh').addEventListener('click',()=>refresh(true));
-    box.querySelector('#walio-wallet-disconnect').addEventListener('click',disconnect);
+    if(saved?.address){
+      box.innerHTML=`<article class="external-wallet-connected crypto-connected-card">
+        <header class="crypto-connected-head">
+          <span class="crypto-connected-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 7v10L12 21l7.5-4V7L12 3Z"/><path d="M12 7v10m-3-8h6m-6 6h6"/></svg></span>
+          <div class="crypto-connected-meta"><strong id="walio-wallet-address">${esc(saved.label||txt('External wallet','کیف پول خارجی'))}</strong><span id="walio-wallet-short-address">${short(saved.address)}</span></div>
+          <span class="crypto-connected-network" id="walio-wallet-network">${esc(saved.network||txt('Detecting network…','در حال شناسایی شبکه…'))}</span>
+        </header>
+        <div class="crypto-connected-value"><span>${txt('TOTAL VALUE','ارزش کل')}</span><strong id="walio-wallet-total">—</strong></div>
+        <div class="external-wallet-assets" id="walio-wallet-assets"></div>
+        <div class="external-wallet-actions"><button type="button" class="external-wallet-btn secondary" id="walio-wallet-refresh">${txt('Refresh','به‌روزرسانی')}</button><button type="button" class="external-wallet-btn secondary" id="walio-wallet-disconnect">${txt('Disconnect','قطع اتصال')}</button></div>
+        <p class="external-wallet-status" id="walio-wallet-status" role="status"></p>
+      </article>`;
+      box.querySelector('#walio-wallet-refresh').addEventListener('click',()=>refresh(true));
+      box.querySelector('#walio-wallet-disconnect').addEventListener('click',disconnect);
+      renderAssets(saved.assets||[],saved.totalUsd||0,saved.usdComplete!==false);
+    }else{
+      box.innerHTML=`<div class="external-wallet-empty">
+        <span class="crypto-connected-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="3"/><path d="M3 10h18m-5 4h2"/></svg></span>
+        <div class="external-wallet-empty-copy"><strong>${txt('No connected wallets yet','هنوز کیف پولی متصل نشده')}</strong><span>${txt('Connect an existing crypto wallet to see its live balance here.','کیف پول رمزارزی موجودتان را وصل کنید تا موجودی زنده اینجا نمایش داده شود.')}</span></div>
+        <button type="button" class="external-wallet-btn" id="walio-wallet-empty-connect">${txt('Connect Wallet','اتصال کیف پول')}</button>
+      </div>`;
+      box.querySelector('#walio-wallet-empty-connect').addEventListener('click',()=>document.getElementById('btn-new-wallets')?.click());
+    }
     const form=document.getElementById('walio-wallet-connect-form');
-    if(form){
+    if(form&&!form.dataset.walioBound){
+      form.dataset.walioBound='true';
       const label=form.querySelector('#walio-wallet-label'),project=form.querySelector('#walio-wc-project-id');
       if(label&&saved?.label)label.value=saved.label;
       try{if(project)project.value=localStorage.getItem(WC_ID_KEY)||''}catch(e){}
@@ -17920,9 +17994,7 @@ window.addEventListener('DOMContentLoaded', () => {
       });
     }
     const cancel=document.getElementById('walio-wallet-connect-cancel');
-    if(cancel)cancel.addEventListener('click',closeWalletSheet);
-    if(saved?.address)renderAssets(saved.assets||[],saved.totalUsd||0,saved.usdComplete!==false);
-    const section=document.getElementById('walio-external-wallet');if(section)section.hidden=!saved?.address;
+    if(cancel&&!cancel.dataset.walioBound){cancel.dataset.walioBound='true';cancel.addEventListener('click',closeWalletSheet)}
   }
   function beginConnect(){
     const modal=document.getElementById('walio-wallet-options');
@@ -17939,10 +18011,9 @@ window.addEventListener('DOMContentLoaded', () => {
     const saved=readSaved();
     const addressEl=box.querySelector('#walio-wallet-address');
     const networkEl=box.querySelector('#walio-wallet-network');
-    if(addressEl)addressEl.textContent=address?`${saved?.label||pendingLabel||txt('External wallet','کیف پول خارجی')} · ${short(address)}`:txt('No external wallet connected','کیف پول رمزارزی متصل نیست');
-    if(networkEl)networkEl.textContent=chainId?(CHAINS[String(chainId).toLowerCase()]?.name||`${txt('Network','شبکه')} ${chainId}`):txt('Network pending','در انتظار شناسایی شبکه');
-    const section=document.getElementById('walio-external-wallet');
-    if(section)section.hidden=!address;
+    if(addressEl)addressEl.textContent=address?(saved?.label||pendingLabel||txt('External wallet','کیف پول خارجی')):txt('No external wallet connected','کیف پول رمزارزی متصل نیست');
+    const shortAddressEl=box.querySelector('#walio-wallet-short-address');if(shortAddressEl)shortAddressEl.textContent=address?short(address):'—';
+    if(networkEl)networkEl.textContent=chainId?(CHAINS[String(chainId).toLowerCase()]?.name||saved?.network||`${txt('Network','شبکه')} ${chainId}`):txt('Network pending','در انتظار شناسایی شبکه');
     const refreshButton=box.querySelector('#walio-wallet-refresh');
     const disconnectButton=box.querySelector('#walio-wallet-disconnect');
     if(refreshButton)refreshButton.hidden=!address;
@@ -17978,7 +18049,7 @@ window.addEventListener('DOMContentLoaded', () => {
       const accounts=await provider.request({method:providerKind==='walletconnect'?'eth_accounts':'eth_requestAccounts'});
       if(!accounts||!accounts[0])throw new Error(txt('The wallet returned no account.','کیف پول حسابی برنگرداند.'));
       const chainId=await provider.request({method:'eth_chainId'});
-      attachEvents(provider);savePublic({address:accounts[0],chainId:String(chainId),kind:providerKind,label:pendingLabel||readSaved()?.label||txt('External wallet','کیف پول خارجی'),totalUsd:0,usdComplete:false,assets:[]});renderState(accounts[0],chainId);publishUpdate();status(txt('Connected. Reading on-chain balances…','متصل شد. در حال خواندن موجودی زنجیره…'));
+      attachEvents(provider);savePublic({address:accounts[0],chainId:String(chainId),kind:providerKind,label:pendingLabel||readSaved()?.label||txt('External wallet','کیف پول خارجی'),totalUsd:0,usdComplete:false,assets:[]});renderBase();renderState(accounts[0],chainId);publishUpdate();status(txt('Connected. Reading on-chain balances…','متصل شد. در حال خواندن موجودی زنجیره…'));
       await refresh(false);closeWalletSheet();
     }catch(e){const msg=e?.code===4001?txt('Connection was rejected in the wallet.','درخواست اتصال در کیف پول رد شد.'):txt(e?.message||'Wallet connection failed.','اتصال کیف پول ناموفق بود.');status(msg,true);if(providerKind==='walletconnect')provider=null}
     finally{busy=false;const b=document.getElementById('walio-wallet-connect');if(b){b.disabled=false;b.textContent=txt('Connect Wallet','اتصال کیف پول')} }
@@ -17988,9 +18059,9 @@ window.addEventListener('DOMContentLoaded', () => {
     p.removeListener?.('accountsChanged',onAccounts);p.removeListener?.('chainChanged',onChain);p.removeListener?.('disconnect',onProviderDisconnect);
     p.on('accountsChanged',onAccounts);p.on('chainChanged',onChain);p.on('disconnect',onProviderDisconnect);
   }
-  function onAccounts(accounts){if(!accounts||!accounts.length){savePublic(null);renderState('',null);publishUpdate();status(txt('Wallet account disconnected.','حساب کیف پول قطع شد.'));return}const prior=readSaved()||{};savePublic({...prior,address:accounts[0],totalUsd:0,usdComplete:false,assets:[]});renderState(accounts[0],prior.chainId);publishUpdate();refresh(false)}
+  function onAccounts(accounts){if(!accounts||!accounts.length){savePublic(null);renderBase();publishUpdate();status(txt('Wallet account disconnected.','حساب کیف پول قطع شد.'));return}const prior=readSaved()||{};savePublic({...prior,address:accounts[0],totalUsd:0,usdComplete:false,assets:[]});renderState(accounts[0],prior.chainId);publishUpdate();refresh(false)}
   function onChain(chain){const prior=readSaved()||{};savePublic({...prior,chainId:String(chain),totalUsd:0,usdComplete:false,assets:[]});renderState(prior.address,chain);publishUpdate();refresh(false)}
-  function onProviderDisconnect(){provider=null;savePublic(null);renderState('',null);publishUpdate();status(txt('Wallet disconnected.','کیف پول قطع شد.'))}
+  function onProviderDisconnect(){provider=null;savePublic(null);renderBase();publishUpdate();status(txt('Wallet disconnected.','کیف پول قطع شد.'))}
   function toHex(n){return '0x'+BigInt(n).toString(16)}
   async function rpc(p,method,params){return p.request({method,params})}
   async function rpcRead(network,method,params){const response=await fetch(network.rpc,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:Date.now(),method,params})});if(!response.ok)throw new Error('RPC HTTP '+response.status);const data=await response.json();if(data.error)throw new Error(data.error.message||'RPC request failed');return data.result}
@@ -18016,7 +18087,7 @@ window.addEventListener('DOMContentLoaded', () => {
       if(!accounts?.[0])return;
       const addr=accounts[0],key=String(chainId).toLowerCase(),network=CHAINS[key]||null;
       const prior=readSaved()||{};const changedChain=prior.chainId&&String(prior.chainId).toLowerCase()!==String(chainId).toLowerCase();savePublic({...prior,address:addr,chainId:String(chainId),kind:providerKind,...(changedChain?{totalUsd:0,usdComplete:false,assets:[]}: {})});renderState(addr,chainId);
-      if(!network) { const nativeRaw=await rpc(provider,'eth_getBalance',[addr,'latest']); const amount=Number(BigInt(nativeRaw||'0x0'))/1e18; const assets=[{symbol:txt('Native coin','ارز بومی'),amount,usd:null,stable:false}];const current=readSaved()||{};savePublic({...current,address:addr,chainId:String(chainId),kind:providerKind,totalUsd:0,usdComplete:false,network:`${txt('Unsupported network','شبکه پشتیبانی‌نشده')} ${chainId}`,assets,updatedAt:Date.now()});renderAssets(assets,0,false);publishUpdate();status(txt('Connected. This network is not configured for token and USD-price lookups.','متصل شد. این شبکه برای بررسی توکن و قیمت دلاری پیکربندی نشده است.'),true);return;}
+      if(!network) { const nativeRaw=await rpc(provider,'eth_getBalance',[addr,'latest']); const amount=Number(BigInt(nativeRaw||'0x0'))/1e18; const assets=[{symbol:txt('Native coin','ارز بومی'),amount,usd:null,stable:false}];const current=readSaved()||{};savePublic({...current,address:addr,chainId:String(chainId),kind:providerKind,totalUsd:0,usdComplete:false,network:`${txt('Unsupported network','شبکه پشتیبانی‌نشده')} ${chainId}`,assets,updatedAt:Date.now()});renderState(addr,chainId);renderAssets(assets,0,false);publishUpdate();status(txt('Connected. This network is not configured for token and USD-price lookups.','متصل شد. این شبکه برای بررسی توکن و قیمت دلاری پیکربندی نشده است.'),true);return;}
       const nativeRaw=await rpcRead(network,'eth_getBalance',[addr,'latest']);
       const native=Number(BigInt(nativeRaw||'0x0'))/1e18;
       const balances=[{symbol:network?.symbol||txt('Native coin','ارز بومی'),amount:native,priceKey:network?.priceId,stable:false}];
@@ -18032,7 +18103,7 @@ window.addEventListener('DOMContentLoaded', () => {
   async function disconnect(){
     const old=provider,kind=providerKind;provider=null;providerKind='';
     try{if(kind==='walletconnect'&&old?.disconnect)await old.disconnect()}catch(e){}
-    savePublic(null);renderState('',null);const section=document.getElementById('walio-external-wallet');if(section)section.hidden=true;publishUpdate();status(txt('Disconnected from Walio. Your wallet itself is unchanged.','اتصال به والیو قطع شد؛ خود کیف پول تغییری نکرده است.'));
+    savePublic(null);renderBase();publishUpdate();status(txt('Disconnected from Walio. Your wallet itself is unchanged.','اتصال به والیو قطع شد؛ خود کیف پول تغییری نکرده است.'));
   }
   async function restore(){
     const saved=readSaved();if(!saved?.address)return;
@@ -18053,5 +18124,6 @@ window.addEventListener('DOMContentLoaded', () => {
   window.walioExternalWallet={refresh:()=>refresh(true),disconnect,beginConnect,getSummary,getContributionToman};
 })();
 </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a31ab9567ef82362',t:'MTc4NzgzMDAxNA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a31bbbd58fd9a895',t:'MTc4Nzg0MDYwMg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a323cc45cd40d93d',t:'MTc4NzkyNTE2MQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a3b73dd5bcb999fb',t:'MTc4OTQ3MTIyMA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a3b7b9b30cb6d64d',t:'MTc4OTQ3NjI5Mw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a401f4f74f95be4c',t:'MTc5MDI1NDY2Nw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4026fc889e62419',t:'MTc5MDI1OTY5OA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a435bc46bc6eff80',t:'MTc5MDc5NzYwNA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a31ab9567ef82362',t:'MTc4NzgzMDAxNA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a31bbbd58fd9a895',t:'MTc4Nzg0MDYwMg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a323cc45cd40d93d',t:'MTc4NzkyNTE2MQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a3b73dd5bcb999fb',t:'MTc4OTQ3MTIyMA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a3b7b9b30cb6d64d',t:'MTc4OTQ3NjI5Mw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a401f4f74f95be4c',t:'MTc5MDI1NDY2Nw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4026fc889e62419',t:'MTc5MDI1OTY5OA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a435cd2c4e04ff80',t:'MTc5MDc5ODI5Nw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","spa":2}' crossorigin="anonymous"></script>
+</body>
 </html>
