@@ -2,8 +2,7 @@
 <html lang="en" dir="ltr" data-theme="light">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
-  <meta name="color-scheme" content="light dark">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Walio - Mobile-First Personal Finance PWA</title>
   
   <!-- PWA & Mobile Web App Meta Tags -->
@@ -81,13 +80,7 @@
 
   --shadow-main: 0 16px 36px rgba(0, 0, 0, 0.35);
   --shadow-glass: 0 10px 30px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.12);
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
-  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
-  --duration-press: 120ms;
-  --duration-ui: 200ms;
-  --duration-sheet: 360ms;
-  --transition-spring: transform var(--duration-press) var(--ease-out), opacity var(--duration-ui) var(--ease-out), background-color 160ms ease, color 160ms ease, box-shadow 160ms ease, border-color 160ms ease, filter 160ms ease;
+  --transition-spring: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 [data-theme="light"] {
@@ -175,13 +168,6 @@ html {
   --immersive-top-dark: #1E3A8A;
 }
 
-html {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-  overscroll-behavior: none;
-}
-
 html, body {
   width: 100%;
   min-height: 100%;
@@ -193,7 +179,7 @@ html, body {
   font-size: clamp(14px, 3.5vw, 15px);
   line-height: 1.5;
   overflow-x: hidden;
-  overscroll-behavior: none;
+  user-select: none;
 }
 
 /* One continuous paint from status bar → header → hero */
@@ -254,21 +240,17 @@ body:not(.immersive-blue) .ios-status-bleed {
   background: var(--bg-main);
 }
 
-button, a, [role="button"] {
+button {
   cursor: pointer;
   border: none;
   background: none;
   font-family: inherit;
   color: inherit;
-  touch-action: manipulation;
-  user-select: none;
-  -webkit-user-select: none;
-  -webkit-touch-callout: none;
-  transition: transform var(--duration-press) var(--ease-out), background-color 160ms ease, color 160ms ease, box-shadow 160ms ease, border-color 160ms ease, opacity 160ms var(--ease-out);
+  transition: var(--transition-spring);
 }
 
-button:active, a:active, [role="button"]:active {
-  transform: scale(0.97);
+button:active {
+  transform: scale(0.96);
 }
 
 input, select, textarea {
@@ -682,11 +664,16 @@ input, select, textarea {
 
 .tab-view {
   display: none;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
   width: 100%;
 }
 
 .tab-view.active {
   display: block;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ================= FLOATING PILL BOTTOM NAV (ref style) ================= */
@@ -794,7 +781,7 @@ input, select, textarea {
   border: 0;
   background: transparent;
   cursor: pointer;
-  transition: transform var(--duration-ui) var(--ease-out), background-color 160ms ease, color 160ms ease, max-width var(--duration-ui) var(--ease-out), gap 160ms ease, padding 160ms ease, box-shadow 160ms ease;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
 }
 
@@ -1147,9 +1134,6 @@ body.rtl-mode .bottom-nav-item.active {
   scroll-snap-type: x mandatory;
   padding-bottom: 6px;
   scrollbar-width: none;
-  touch-action: pan-x pan-y;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-x: contain;
 }
 
 .wallets-carousel::-webkit-scrollbar {
@@ -2457,7 +2441,6 @@ body.rtl-mode .ios-switch input:checked + .switch-slider:before {
   left: 0;
   width: 100%;
   height: 100%;
-  height: 100dvh;
   background: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -2467,8 +2450,7 @@ body.rtl-mode .ios-switch input:checked + .switch-slider:before {
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--duration-sheet) var(--ease-out);
-  overscroll-behavior: none;
+  transition: opacity 0.3s ease;
 }
 
 .modal-overlay.open {
@@ -2479,36 +2461,19 @@ body.rtl-mode .ios-switch input:checked + .switch-slider:before {
 .modal-sheet {
   width: 100%;
   max-width: 440px;
-  max-height: 90dvh;
+  max-height: 90vh;
   overflow-y: auto;
-  overscroll-behavior: contain;
   background: var(--bg-sub);
   border-radius: 30px 30px 0 0;
   border-top: 1px solid var(--border-glass);
-  padding: 8px 20px max(24px, calc(16px + env(safe-area-inset-bottom, 0px))) 20px;
+  padding: 24px 20px max(env(safe-area-inset-bottom), 24px) 20px;
   box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.5);
   transform: translateY(100%);
-  transition: transform var(--duration-sheet) var(--ease-drawer);
-  touch-action: pan-y;
-  will-change: transform;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .modal-overlay.open .modal-sheet {
   transform: translateY(0);
-}
-
-.modal-sheet.is-dragging {
-  transition: none;
-}
-
-.sheet-grabber {
-  display: block;
-  width: 36px;
-  height: 5px;
-  margin: 4px auto 14px;
-  border-radius: 999px;
-  background: var(--chip-bg-strong);
-  touch-action: none;
 }
 
 .modal-sheet-header {
@@ -8441,7 +8406,9 @@ body:not(.rtl-mode) #prof-input-user { text-align: left; }
   .profile-photo-strip .btn-secondary.is-danger { border-color: var(--color-red); }
 }
 
-/* ================= APP LOCK / SECURITY (PIN, Password, Face ID) ================= */
+/* ================= APP LOCK / SECURITY (PIN, Password, Face ID) — 2026 REDESIGN =================
+   Matches the app design language: flat immersive-blue stage, frosted glass card with
+   orbital ring + grain, white pill actions (same DNA as .home-overview-hero / .currency-hero). */
 body.app-locked > *:not(#app-lock-screen):not(#walio-boot-loader) {
   filter: blur(18px) saturate(0.6);
   pointer-events: none;
@@ -8455,50 +8422,267 @@ body.app-locked { overflow: hidden; }
   z-index: 99999;
   display: none;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  padding: calc(env(safe-area-inset-top, 0px) + 26px) 22px calc(env(safe-area-inset-bottom, 0px) + 26px);
-  background: var(--bg-main);
-  background-image: radial-gradient(120% 70% at 50% -10%, var(--accent-glow) 0%, transparent 60%);
-  -webkit-backdrop-filter: blur(30px);
-  backdrop-filter: blur(30px);
-  font-family: var(--font-main);
-  color: var(--text-primary);
+  overflow-y: auto;
   overscroll-behavior: contain;
-}
-#app-lock-screen.visible { display: flex; }
-
-.lock-brand {
-  width: 78px; height: 78px;
-  border-radius: 24px;
-  background: var(--accent-gradient);
-  display: flex; align-items: center; justify-content: center;
+  background: var(--immersive-top, #2563EB);
+  background-color: var(--immersive-top, #2563EB);
   color: #fff;
-  box-shadow: 0 16px 40px var(--accent-glow);
-  margin-bottom: 2px;
+  font-family: var(--font-main);
+  isolation: isolate;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+#app-lock-screen::-webkit-scrollbar { width: 0; height: 0; display: none; background: transparent; }
+#app-lock-screen.visible { display: flex; animation: lockScreenIn 0.45s ease; }
+@keyframes lockScreenIn { from { opacity: 0; } to { opacity: 1; } }
+
+[data-theme="dark"] #app-lock-screen {
+  background: var(--immersive-top-dark, #1E3A8A);
+  background-color: var(--immersive-top-dark, #1E3A8A);
+}
+
+/* Ambient depth over the flat blue — same DNA as the Home hero background */
+#app-lock-screen::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  top: -150px;
+  right: -100px;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgba(147, 197, 253, 0.38), rgba(255, 255, 255, 0.06) 55%, transparent 72%);
+  filter: blur(6px);
+  pointer-events: none;
+}
+#app-lock-screen::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 90% 42% at 50% 112%, rgba(255, 255, 255, 0.12), transparent 60%),
+    radial-gradient(rgba(255, 255, 255, 0.32) 0.6px, transparent 0.6px);
+  background-size: auto, 17px 17px;
+  opacity: 0.55;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 20%, #000 72%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 20%, #000 72%, transparent 100%);
+}
+
+/* Centered stage; margin:auto keeps it reachable when content overflows */
+.lock-stage {
+  position: relative;
+  z-index: 1;
+  margin: auto;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding:
+    calc(env(safe-area-inset-top, 0px) + 30px)
+    22px
+    calc(env(safe-area-inset-bottom, 0px) + 28px);
+}
+
+/* ---- Time bar (classic lock-screen touch, locale-aware) ---- */
+.lock-timebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  color: #fff;
+  text-align: center;
+}
+.lock-time {
+  font-size: clamp(40px, 11vw, 52px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -1.5px;
+  text-shadow: 0 10px 34px rgba(15, 40, 120, 0.35);
+}
+.lock-date {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(226, 232, 240, 0.78);
+}
+
+/* ---- Glass card (identical construction to .home-overview-hero) ---- */
+.lock-card {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  padding: 22px 20px 20px;
+  overflow: hidden;
+  color: #fff;
+  background:
+    linear-gradient(160deg,
+      rgba(255, 255, 255, 0.20) 0%,
+      rgba(255, 255, 255, 0.08) 42%,
+      rgba(255, 255, 255, 0.04) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 28px;
+  box-shadow:
+    0 24px 54px rgba(15, 40, 120, 0.30),
+    0 1px 0 rgba(255, 255, 255, 0.30) inset,
+    0 -1px 0 rgba(15, 40, 120, 0.10) inset;
+  backdrop-filter: blur(22px) saturate(165%);
+  -webkit-backdrop-filter: blur(22px) saturate(165%);
+  animation: lockCardIn 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes lockCardIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+.lock-card::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  top: -92px;
+  right: -70px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 0 0 26px rgba(255, 255, 255, 0.035),
+    0 0 50px rgba(147, 197, 253, 0.16);
+  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.14), transparent 55%);
+  pointer-events: none;
+}
+body.rtl-mode .lock-card::before { right: auto; left: -70px; }
+.lock-card::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 50% at 18% 110%, rgba(255, 255, 255, 0.14), transparent 55%),
+    radial-gradient(rgba(255, 255, 255, 0.4) 0.55px, transparent 0.55px);
+  background-size: auto, 15px 15px;
+  opacity: 0.7;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
+}
+.lock-card > * { position: relative; z-index: 1; }
+
+/* Head: brand tile + status pill (mirrors .currency-hero-label-row) */
+.lock-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.lock-brand {
+  width: 56px;
+  height: 56px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.10));
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  border-radius: 19px;
+  box-shadow:
+    0 12px 28px rgba(15, 40, 120, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.lock-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 29px;
+  padding: 0 12px;
+  color: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.13);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+.lock-status-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #FBBF24;
+  box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.5);
+  animation: lockStatusPulse 2s infinite;
+}
+@keyframes lockStatusPulse {
+  0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.50); }
+  65% { box-shadow: 0 0 0 7px rgba(251, 191, 36, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+}
+
 .lock-title {
-  font-size: 21px; font-weight: 800; margin: 0; text-align: center;
+  margin: 0;
+  font-size: clamp(23px, 6.4vw, 27px);
+  font-weight: 850;
+  letter-spacing: -0.5px;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 8px 30px rgba(15, 40, 120, 0.30);
 }
 .lock-subtitle {
-  font-size: 13.5px; color: var(--text-secondary); margin: 0 0 4px; text-align: center; max-width: 300px;
+  margin: 7px 0 0;
+  font-size: 13.5px;
   line-height: 1.7;
+  text-align: center;
+  color: rgba(226, 232, 240, 0.76);
+  max-width: 300px;
 }
 
-.lock-dots { display: flex; gap: 14px; margin: 10px 0 4px; min-height: 16px; }
+/* PIN dots */
+.lock-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  min-height: 20px;
+  margin: 18px 0 6px;
+}
 .lock-dot {
-  width: 14px; height: 14px; border-radius: 50%;
-  border: 1.8px solid var(--border-hover, rgba(120,120,140,.5));
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1.8px solid rgba(255, 255, 255, 0.40);
   background: transparent;
-  transition: var(--transition-spring);
+  transition: var(--transition-spring, all 0.3s ease);
 }
-.lock-dot.filled { background: var(--accent-primary); border-color: var(--accent-primary); transform: scale(1.08); }
+.lock-dot.filled {
+  background: linear-gradient(180deg, #FFFFFF, #BFDBFE);
+  border-color: rgba(255, 255, 255, 0.92);
+  transform: scale(1.06);
+  box-shadow: 0 0 14px rgba(191, 219, 254, 0.65);
+  animation: lockDotPop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes lockDotPop {
+  0% { transform: scale(0.6); }
+  100% { transform: scale(1.06); }
+}
 
+/* Error message (light red on blue = readable) */
 .lock-error {
-  min-height: 18px; font-size: 12.5px; color: var(--color-red); font-weight: 600; text-align: center;
+  min-height: 18px;
+  margin: 2px 0 4px;
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 650;
+  color: #FECACA;
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
-.lock-shake { animation: lockShake 0.42s cubic-bezier(.36,.07,.19,.97); }
+.lock-error:not(:empty) { opacity: 1; }
+
+/* Wrong attempt → shake the card (JS adds .lock-shake on #app-lock-screen) */
+#app-lock-screen.lock-shake .lock-card { animation: lockShake 0.42s cubic-bezier(0.36, 0.07, 0.19, 0.97); }
 @keyframes lockShake {
   10%, 90% { transform: translateX(-3px); }
   20%, 80% { transform: translateX(5px); }
@@ -8506,65 +8690,232 @@ body.app-locked { overflow: hidden; }
   40%, 60% { transform: translateX(8px); }
 }
 
+/* Keypad — iOS-style frosted round keys with white press flash */
 .lock-keypad {
   display: grid;
   grid-template-columns: repeat(3, 74px);
-  gap: 16px;
+  gap: 15px;
   justify-content: center;
-  margin-top: 6px;
+  margin-top: 8px;
 }
 .lock-key {
-  width: 74px; height: 74px; border-radius: 50%;
-  border: 1px solid var(--border-glass);
-  background: var(--chip-bg-strong, rgba(120,120,140,.14));
-  color: var(--text-primary);
-  font-size: 27px; font-weight: 500;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.09);
+  color: #fff;
+  font-size: 26px;
+  font-weight: 500;
   font-family: var(--font-main);
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  transition: transform .12s ease, background .18s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.12s ease, background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
 }
-.lock-key:active { transform: scale(0.92); background: var(--accent-primary); color: #fff; }
-.lock-key.ghost { background: transparent; border-color: transparent; font-size: 15px; font-weight: 600; color: var(--text-secondary); }
-.lock-key.ghost:active { background: transparent; color: var(--accent-primary); transform: scale(0.92); }
-.lock-key.ghost svg { width: 24px; height: 24px; }
+.lock-key:hover { background: rgba(255, 255, 255, 0.14); border-color: rgba(255, 255, 255, 0.28); }
+.lock-key:active {
+  transform: scale(0.92);
+  background: #fff;
+  color: #1E3A8A;
+  border-color: #fff;
+  box-shadow: 0 10px 26px rgba(255, 255, 255, 0.28);
+}
+.lock-key.ghost {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 15px;
+  font-weight: 600;
+}
+.lock-key.ghost:active { background: #fff; color: #1E3A8A; border-color: #fff; }
+.lock-key.ghost svg { width: 26px; height: 26px; }
 
-.lock-pass-form { width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 12px; }
+/* Password form */
+.lock-pass-form {
+  width: 100%;
+  max-width: 320px;
+  margin: 16px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.lock-pass-field { position: relative; }
 .lock-pass-form input {
   width: 100%;
-  padding: 15px 16px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-glass);
-  background: var(--input-bg, rgba(120,120,140,.10));
-  color: var(--text-primary);
+  padding: 15px 46px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.10);
+  color: #fff;
   font-size: 16px;
   font-family: var(--font-main);
   text-align: center;
   letter-spacing: 2px;
   outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-.lock-pass-form input:focus { border-color: var(--accent-primary); }
-
-.lock-actions { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 6px; width: 100%; max-width: 320px; }
-.lock-bio-btn {
-  display: inline-flex; align-items: center; gap: 9px;
-  padding: 12px 20px;
-  border-radius: 999px;
-  border: 1px solid var(--border-glass);
-  background: var(--chip-bg, rgba(120,120,140,.10));
-  color: var(--text-primary);
-  font-size: 14px; font-weight: 600;
-  font-family: var(--font-main);
+.lock-pass-form input::placeholder { color: rgba(226, 232, 240, 0.55); letter-spacing: 0.5px; }
+.lock-pass-form input:focus {
+  border-color: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.14);
+}
+.lock-pass-eye {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.70);
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
   cursor: pointer;
 }
-.lock-bio-btn:active { transform: scale(0.97); }
-.lock-bio-btn svg { color: var(--accent-primary); }
-.lock-link-btn {
-  background: none; border: 0; color: var(--accent-primary);
-  font-size: 13px; font-weight: 600; font-family: var(--font-main); cursor: pointer; padding: 6px;
+body.rtl-mode .lock-pass-eye { right: auto; left: 8px; }
+.lock-pass-eye:hover { color: #fff; background: rgba(255, 255, 255, 0.12); }
+.lock-pass-eye:active { transform: translateY(-50%) scale(0.9); }
+.lock-pass-eye svg.eye-off { display: none; }
+.lock-pass-eye.is-on svg.eye-on { display: none; }
+.lock-pass-eye.is-on svg.eye-off { display: block; }
+
+/* Unlock CTA — same white pill language as .home-hero-pill */
+.lock-unlock-btn {
+  width: 100%;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #0F172A;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F1F5FF 100%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 800;
+  font-family: var(--font-main);
+  letter-spacing: -0.25px;
+  box-shadow:
+    0 14px 28px rgba(15, 40, 120, 0.25),
+    0 2px 0 rgba(255, 255, 255, 0.9) inset;
 }
-.lock-attempts { font-size: 12px; color: var(--text-muted); }
+.lock-unlock-btn:hover { transform: translateY(-2px); }
+.lock-unlock-btn:active { transform: scale(0.97); }
+
+/* Actions: biometric pill + attempts / forgot row */
+.lock-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+  width: 100%;
+}
+.lock-bio-btn {
+  width: 100%;
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: #0F172A;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F1F5FF 100%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 800;
+  font-family: var(--font-main);
+  box-shadow:
+    0 12px 26px rgba(15, 40, 120, 0.22),
+    0 2px 0 rgba(255, 255, 255, 0.9) inset;
+}
+.lock-bio-btn svg { color: #1D4ED8; flex: 0 0 auto; }
+.lock-bio-btn:hover { transform: translateY(-2px); }
+.lock-bio-btn:active { transform: scale(0.97); }
+
+.lock-actions-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 22px;
+}
+.lock-actions-row:has(.lock-attempts:not(:empty)) { justify-content: space-between; }
+.lock-attempts {
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: #FDE68A;
+  background: rgba(251, 191, 36, 0.12);
+  border: 1px solid rgba(251, 191, 36, 0.22);
+  font-size: 11.5px;
+  font-weight: 650;
+}
+.lock-attempts:empty { display: none; }
+.lock-link-btn {
+  background: none;
+  border: 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 12.5px;
+  font-weight: 650;
+  font-family: var(--font-main);
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+.lock-link-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.10); }
+
+/* Brand footnote */
+.lock-footnote {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(226, 232, 240, 0.55);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  direction: ltr;
+}
+
+/* Small screens */
+@media (max-width: 360px) {
+  .lock-keypad { grid-template-columns: repeat(3, 66px); gap: 13px; }
+  .lock-key { width: 66px; height: 66px; font-size: 24px; }
+  .lock-time { font-size: 40px; }
+}
+
+/* Desktop: the lock screen mirrors the phone frame */
+@media (min-width: 640px) {
+  #app-lock-screen {
+    inset: auto;
+    top: 24px;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 440px;
+    border-radius: 46px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #app-lock-screen.visible,
+  .lock-card,
+  .lock-dot.filled,
+  .lock-status-dot,
+  #app-lock-screen.lock-shake .lock-card { animation: none !important; }
+}
+
 
 /* ---- Security setup sheet ---- */
 .sec-sheet-body { display: flex; flex-direction: column; gap: 14px; padding: 4px 0 8px; }
@@ -9950,23 +10301,25 @@ body.toman-unit-hidden .market-rate-values,
   }
 }
 
-/* ================= APP BOOT LOADER (simple circular spinner) =================
- * Shown for ~1s on every app start / resume, but NEVER while the first-launch
- * welcome screen is still pending.
+/* ================= APP BOOT LOADER (Single Circular Spinner) =================
+ * Minimal single circular loader on startup / resume.
  */
 #walio-boot-loader {
   position: fixed;
   inset: 0;
   z-index: 130000;
   display: none;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 18px;
   background: var(--bg-main);
-  background-image: radial-gradient(120% 70% at 50% -10%, var(--accent-glow) 0%, transparent 62%);
-  font-family: var(--font-main);
-  color: var(--text-secondary);
+  background-color: var(--bg-main);
+  opacity: 1;
+  transition: opacity 0.24s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.24s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] #walio-boot-loader {
+  background: var(--bg-main, #0A0A0E);
+  background-color: var(--bg-main, #0A0A0E);
 }
 
 html.walio-booting #walio-boot-loader,
@@ -9979,50 +10332,44 @@ html.walio-booting body {
 }
 
 #walio-boot-loader.is-hiding {
-  animation: walioBootLoaderOut .34s cubic-bezier(.4, 0, .2, 1) forwards;
+  opacity: 0;
+  visibility: hidden;
   pointer-events: none;
 }
 
-@keyframes walioBootLoaderOut {
-  from { opacity: 1; }
-  to   { opacity: 0; visibility: hidden; }
+.walio-boot-spinner {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid var(--border-glass, rgba(0, 0, 0, 0.08));
+  border-top-color: var(--accent-primary, #4F46E5);
+  animation: walioBootSpin 0.75s linear infinite;
 }
 
-.walio-boot-spinner {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  border: 3px solid var(--border-glass);
-  border-top-color: var(--accent-primary);
-  border-right-color: var(--accent-primary);
-  animation: walioBootSpin .8s linear infinite;
+[data-theme="dark"] .walio-boot-spinner {
+  border-color: rgba(255, 255, 255, 0.12);
+  border-top-color: #3B82F6;
 }
 
 @keyframes walioBootSpin {
   to { transform: rotate(360deg); }
 }
 
-.walio-boot-word {
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  opacity: .75;
-  background: var(--accent-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: walioBootPulse 1.4s ease-in-out infinite;
-}
-
-@keyframes walioBootPulse {
-  0%, 100% { opacity: .55; }
-  50%      { opacity: 1; }
+@media (min-width: 640px) {
+  #walio-boot-loader {
+    left: 0;
+    right: 0;
+    top: 24px;
+    width: 440px;
+    height: calc(100vh - 24px);
+    min-height: 620px;
+    margin: 0 auto;
+    border-radius: 46px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .walio-boot-spinner { animation-duration: 1.6s; }
-  .walio-boot-word { animation: none; opacity: .85; }
+  .walio-boot-spinner { animation-duration: 1.5s; }
 }
 
 /* Auto (day/night) theme row: the manual dark switch is managed automatically */
@@ -10032,93 +10379,43 @@ html.walio-booting body {
 }
 
 
-/* ================= EMIL / APPLE / MOBILE-NATIVE POLISH ================= */
-.walio-toaster {
-  position: fixed;
-  z-index: 4000;
-  left: 50%;
-  bottom: max(24px, calc(env(safe-area-inset-bottom, 0px) + 88px));
-  width: min(calc(100% - 32px), 380px);
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column-reverse;
-  gap: 8px;
-  pointer-events: none;
-}
-
-.walio-toast {
-  pointer-events: auto;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 12px 14px;
-  color: var(--text-primary);
-  background: var(--glass-bg);
+/* ================= EXTERNAL CRYPTO WALLET (additive feature) ================= */
+.external-crypto-wallet {
+  margin: 18px 0 28px;
+  padding: 20px;
   border: 1px solid var(--border-glass);
-  border-radius: 16px;
-  box-shadow: var(--shadow-glass);
-  backdrop-filter: blur(22px) saturate(180%);
-  -webkit-backdrop-filter: blur(22px) saturate(180%);
-  font-size: 13px;
-  font-weight: 650;
-  line-height: 1.45;
-  transform: translateY(110%);
-  opacity: 0;
-  transition: transform 220ms var(--ease-out), opacity 220ms var(--ease-out);
-  touch-action: pan-y;
-  will-change: transform, opacity;
+  border-radius: 24px;
+  background: var(--card-bg);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, .08);
+  color: var(--text-primary);
 }
-
-.walio-toast.show {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.walio-toast.is-leaving {
-  transform: translateY(110%);
-  opacity: 0;
-}
-
-.walio-toast-icon {
-  flex: 0 0 auto;
-  width: 18px;
-  height: 18px;
-  margin-top: 1px;
-  color: var(--color-green);
-}
-
-.walio-toast.error .walio-toast-icon { color: var(--color-red); }
-
-@media (hover: none), (pointer: coarse) {
-  .home-hero-pill:hover,
-  .home-hero-fab:hover,
-  .home-quick-tile:hover,
-  .home-quick-primary:hover,
-  .bottom-nav-fab:hover,
-  .ios-wallet-card:hover,
-  .currency-board-card:hover,
-  .header-icon-btn:hover,
-  .currency-hero-btn:hover,
-  .open-currency-board-btn:hover,
-  .quick-swap-button:hover,
-  .profile-hero-btn:hover,
-  .market-rate-row:hover,
-  .home-market-row:hover,
-  .tx-item-card:hover,
-  .currency-hero-chart-card:hover {
-    transform: none !important;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html, body, button, a, [role="button"], .modal-overlay, .modal-sheet, .walio-toast, .tab-view {
-    transition: none !important;
-    animation: none !important;
-  }
-  button:active, a:active, [role="button"]:active {
-    transform: none;
-  }
-}
+.external-crypto-head { display:flex; align-items:flex-start; gap:13px; margin-bottom:18px; }
+.external-crypto-mark { width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;border-radius:15px;background:linear-gradient(135deg,#627eea,#4f46e5);color:white;font-size:27px; }
+.external-crypto-heading h2 { margin:2px 0 5px;font-size:20px;font-weight:750;letter-spacing:-.03em;color:var(--text-primary); }
+.external-crypto-heading p { margin:0;color:var(--text-secondary);font-size:12px;line-height:1.55; }
+.external-crypto-kicker { color:var(--text-muted);font-size:9px;font-weight:800;letter-spacing:.13em; }
+.external-wallet-actions { display:flex;flex-wrap:wrap;gap:9px;margin-top:14px; }
+.external-wallet-btn { min-height:42px;border:0;border-radius:13px;padding:0 15px;background:var(--accent-gradient);color:#fff;font:inherit;font-size:13px;font-weight:700;cursor:pointer; }
+.external-wallet-btn.secondary { border:1px solid var(--border-glass);background:var(--glass-bg);color:var(--text-primary); }
+.external-wallet-btn:disabled { opacity:.58;cursor:wait; }
+.external-wallet-status { margin:8px 0 0;color:var(--text-secondary);font-size:12px;line-height:1.5;overflow-wrap:anywhere; }
+.external-wallet-status.error { color:#ef4444; }
+.external-wallet-connected { padding:14px;border:1px solid var(--border-glass);border-radius:17px;background:var(--glass-bg); }
+.external-wallet-ident { display:flex;justify-content:space-between;align-items:center;gap:12px; }
+.external-wallet-ident strong { font-size:13px;overflow-wrap:anywhere; }
+.external-wallet-ident span { color:var(--text-secondary);font-size:11px; }
+.external-wallet-total { margin:14px 0 10px;font-size:24px;font-weight:800;letter-spacing:-.04em; }
+.external-wallet-assets { display:grid;gap:8px; }
+.external-wallet-asset { display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--border-subtle); }
+.external-wallet-asset-name { font-size:12px;font-weight:700; }
+.external-wallet-asset-amount { text-align:right;font-size:12px;font-weight:700; }
+.external-wallet-asset-usd { display:block;margin-top:2px;color:var(--text-muted);font-size:10px;font-weight:500; }
+.external-wallet-config { display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;margin-top:12px; }
+.external-wallet-config input { min-width:0;height:38px;padding:0 10px;border:1px solid var(--border-glass);border-radius:10px;background:var(--bg-sub);color:var(--text-primary);font:inherit;font-size:12px; }
+.external-wallet-config button { border:1px solid var(--border-glass);border-radius:10px;padding:0 11px;background:var(--glass-bg);color:var(--text-primary);font:600 11px inherit;cursor:pointer; }
+.external-wallet-footnote { margin:11px 0 0;color:var(--text-muted);font-size:10px;line-height:1.5; }
+.external-wallet-footnote a { color:var(--accent-primary); }
+@media (max-width:380px) { .external-crypto-wallet { padding:15px; }.external-wallet-ident { align-items:flex-start;flex-direction:column; } }
 
 </style>
 <script>
@@ -10150,9 +10447,15 @@ function walioWelcomePending() {
 
 (function () {
   var settings = {};
+  var lang = 'en';
   try { settings = JSON.parse(localStorage.getItem('walio_settings') || '{}') || {}; } catch (e) {}
   try {
+    lang = localStorage.getItem('walio_lang') || ((navigator.language && navigator.language.startsWith('fa')) ? 'fa' : 'en');
+  } catch (e) {}
+  try {
     document.documentElement.setAttribute('data-theme', walioResolveThemeMode(settings));
+    document.documentElement.setAttribute('lang', lang);
+    document.documentElement.setAttribute('dir', lang === 'fa' ? 'rtl' : 'ltr');
   } catch (e) {}
 
   // No loading spinner on the very first launch (welcome screen shows instead).
@@ -10165,7 +10468,6 @@ function walioWelcomePending() {
 <body class="immersive-blue">
   <div id="walio-boot-loader" role="status" aria-live="polite" aria-label="Loading Walio">
     <div class="walio-boot-spinner" aria-hidden="true"></div>
-    <span class="walio-boot-word">Walio</span>
   </div>
 
   <div class="walio-welcome" id="walio-welcome-intro" aria-hidden="true" role="dialog" aria-label="Welcome to Walio">
@@ -10488,7 +10790,6 @@ function walioWelcomePending() {
       <!-- 2. NEW TRANSACTION MODAL SHEET -->
       <div id="tx-modal-sheet" class="modal-overlay">
         <div class="modal-sheet">
-          <div class="sheet-grabber" aria-hidden="true"></div>
           <div class="modal-sheet-header">
             <h3 class="modal-title" data-i18n="tx_title">تراکنش جدید</h3>
             <button class="btn-close-modal" id="close-tx-modal">✕</button>
@@ -10502,7 +10803,7 @@ function walioWelcomePending() {
 
           <div class="tool-input-row">
             <label data-i18n="tx_amount">مبلغ (تومان / $)</label>
-            <input type="number" id="tx-input-amount" class="tool-input" placeholder="0" inputmode="decimal" enterkeyhint="done" />
+            <input type="number" id="tx-input-amount" class="tool-input" placeholder="0" />
           </div>
 
           <div class="tool-input-row">
@@ -10533,7 +10834,6 @@ function walioWelcomePending() {
       <!-- 3. NEW/EDIT WALLET MODAL SHEET -->
       <div id="wallet-modal-sheet" class="modal-overlay">
         <div class="modal-sheet">
-          <div class="sheet-grabber" aria-hidden="true"></div>
           <div class="modal-sheet-header">
             <h3 class="modal-title" data-i18n="add_new_wallet">ایجاد / ویرایش کیف‌ پول</h3>
             <button class="btn-close-modal" id="close-wallet-modal">✕</button>
@@ -10558,7 +10858,7 @@ function walioWelcomePending() {
 
           <div class="tool-input-row">
             <label data-i18n="wallet_balance">موجودی اولیه (تومان / $)</label>
-            <input type="number" id="wallet-input-balance" class="tool-input" placeholder="0" inputmode="decimal" enterkeyhint="done" />
+            <input type="number" id="wallet-input-balance" class="tool-input" placeholder="0" />
           </div>
 
           <div class="tool-input-row">
@@ -10580,7 +10880,6 @@ function walioWelcomePending() {
       <!-- 4. CURRENCY CHART OVERLAY -->
       <div id="currency-chart-overlay" class="modal-overlay">
         <div class="modal-sheet currency-chart-sheet">
-          <div class="sheet-grabber" aria-hidden="true"></div>
           <div class="modal-sheet-header">
             <div class="cc-head-left">
               <span class="cc-flag" id="cc-flag">🇺🇸</span>
@@ -10615,53 +10914,80 @@ function walioWelcomePending() {
   </div>
 
 
-  <div id="walio-toaster" class="walio-toaster" aria-live="polite" aria-relevant="additions"></div>
-
-  <!-- ================= APP LOCK SCREEN ================= -->
+  <!-- ================= APP LOCK SCREEN (2026 redesign — app glass/blue design language) ================= -->
   <div id="app-lock-screen" role="dialog" aria-modal="true" aria-label="App locked">
-    <div class="lock-brand" aria-hidden="true">
-      <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="4" y="10" width="16" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>
-      </svg>
-    </div>
-    <h2 class="lock-title" id="lock-title">Walio</h2>
-    <p class="lock-subtitle" id="lock-subtitle"></p>
+    <div class="lock-stage">
+      <header class="lock-timebar" aria-hidden="true">
+        <strong class="lock-time" id="lock-time">--:--</strong>
+        <span class="lock-date" id="lock-date"></span>
+      </header>
 
-    <div class="lock-dots" id="lock-dots" style="display:none;"></div>
+      <section class="lock-card">
+        <div class="lock-card-head">
+          <span class="lock-brand" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="10" width="16" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+            </svg>
+          </span>
+          <span class="lock-status-pill">
+            <span class="lock-status-dot" aria-hidden="true"></span>
+            <span id="lock-status-label">App Lock</span>
+          </span>
+        </div>
 
-    <form class="lock-pass-form" id="lock-pass-form" style="display:none;" autocomplete="off">
-      <input type="password" id="lock-pass-input" autocomplete="current-password" />
-      <button class="btn-primary-full" type="submit" id="lock-pass-submit">Unlock</button>
-    </form>
+        <h2 class="lock-title" id="lock-title">Walio</h2>
+        <p class="lock-subtitle" id="lock-subtitle"></p>
 
-    <div class="lock-error" id="lock-error"></div>
+        <div class="lock-dots" id="lock-dots" style="display:none;" aria-hidden="true"></div>
 
-    <div class="lock-keypad" id="lock-keypad" style="display:none;">
-      <button class="lock-key" type="button" data-key="1">1</button>
-      <button class="lock-key" type="button" data-key="2">2</button>
-      <button class="lock-key" type="button" data-key="3">3</button>
-      <button class="lock-key" type="button" data-key="4">4</button>
-      <button class="lock-key" type="button" data-key="5">5</button>
-      <button class="lock-key" type="button" data-key="6">6</button>
-      <button class="lock-key" type="button" data-key="7">7</button>
-      <button class="lock-key" type="button" data-key="8">8</button>
-      <button class="lock-key" type="button" data-key="9">9</button>
-      <button class="lock-key ghost" type="button" data-key="bio" id="lock-key-bio" style="visibility:hidden;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M9 10v1M15 10v1M9.5 15c1.5 1.2 3.5 1.2 5 0"/></svg>
-      </button>
-      <button class="lock-key" type="button" data-key="0">0</button>
-      <button class="lock-key ghost" type="button" data-key="del">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 5H9L3 12l6 7h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1z"/><path d="M17 9l-5 6M12 9l5 6"/></svg>
-      </button>
-    </div>
+        <form class="lock-pass-form" id="lock-pass-form" style="display:none;" autocomplete="off">
+          <div class="lock-pass-field">
+            <input type="password" id="lock-pass-input" autocomplete="current-password" />
+            <button type="button" class="lock-pass-eye" id="lock-pass-eye" aria-label="Show password">
+              <svg class="eye-on" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="eye-off" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+          <button class="lock-unlock-btn" type="submit" id="lock-pass-submit">Unlock</button>
+        </form>
 
-    <div class="lock-actions">
-      <button class="lock-bio-btn" type="button" id="lock-bio-btn" style="display:none;">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M9 10v1M15 10v1M9.5 15c1.5 1.2 3.5 1.2 5 0"/></svg>
-        <span id="lock-bio-label">Face ID</span>
-      </button>
-      <span class="lock-attempts" id="lock-attempts"></span>
-      <button class="lock-link-btn" type="button" id="lock-forgot-btn"></button>
+        <div class="lock-error" id="lock-error" role="alert"></div>
+
+        <div class="lock-keypad" id="lock-keypad" style="display:none;">
+          <button class="lock-key" type="button" data-key="1">1</button>
+          <button class="lock-key" type="button" data-key="2">2</button>
+          <button class="lock-key" type="button" data-key="3">3</button>
+          <button class="lock-key" type="button" data-key="4">4</button>
+          <button class="lock-key" type="button" data-key="5">5</button>
+          <button class="lock-key" type="button" data-key="6">6</button>
+          <button class="lock-key" type="button" data-key="7">7</button>
+          <button class="lock-key" type="button" data-key="8">8</button>
+          <button class="lock-key" type="button" data-key="9">9</button>
+          <button class="lock-key ghost" type="button" data-key="bio" id="lock-key-bio" style="visibility:hidden;" aria-label="Biometric unlock">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M9 10v1M15 10v1M9.5 15c1.5 1.2 3.5 1.2 5 0"/></svg>
+          </button>
+          <button class="lock-key" type="button" data-key="0">0</button>
+          <button class="lock-key ghost" type="button" data-key="del" aria-label="Delete">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 5H9L3 12l6 7h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1z"/><path d="M17 9l-5 6M12 9l5 6"/></svg>
+          </button>
+        </div>
+
+        <div class="lock-actions">
+          <button class="lock-bio-btn" type="button" id="lock-bio-btn" style="display:none;">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M9 10v1M15 10v1M9.5 15c1.5 1.2 3.5 1.2 5 0"/></svg>
+            <span id="lock-bio-label">Face ID</span>
+          </button>
+          <div class="lock-actions-row">
+            <span class="lock-attempts" id="lock-attempts"></span>
+            <button class="lock-link-btn" type="button" id="lock-forgot-btn"></button>
+          </div>
+        </div>
+      </section>
+
+      <footer class="lock-footnote" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v9M9.8 9.6h3.6a1.9 1.9 0 1 1 0 3.8h-2.6a1.9 1.9 0 1 0 0 3.8h3.8"/></svg>
+        <span>Walio</span>
+      </footer>
     </div>
   </div>
 
@@ -10712,6 +11038,7 @@ const translations = {
   en: {
     // App & Navigation
     app_name: "Walio",
+    loading_text: "Loading...",
 
     // First-launch welcome screen
     walio_w_get_started: "Get Started",
@@ -11118,6 +11445,7 @@ const translations = {
   fa: {
     // App & Navigation
     app_name: "والیـو",
+    loading_text: "در حال بارگذاری...",
 
     // First-launch welcome screen
     walio_w_get_started: "شروع کنید",
@@ -12322,6 +12650,19 @@ class WalletManager {
 
           <div class="wallets-stack">${listHTML}</div>
         </div>
+
+        <!-- External wallet connection is separate from Walio's own account wallets. -->
+        <section class="external-crypto-wallet" id="walio-external-wallet" aria-labelledby="walio-external-wallet-title">
+          <div class="external-crypto-head">
+            <div class="external-crypto-mark" aria-hidden="true">◇</div>
+            <div class="external-crypto-heading">
+              <span class="external-crypto-kicker" id="walio-wallet-kicker">EXTERNAL WALLET</span>
+              <h2 id="walio-external-wallet-title">Wallets</h2>
+              <p id="walio-wallet-intro">Connect an existing self-custody wallet. Walio never creates or controls a wallet.</p>
+            </div>
+          </div>
+          <div id="walio-external-wallet-body" aria-live="polite"></div>
+        </section>
       </div>`;
 
     if (window.i18n) window.i18n.translateDOM();
@@ -14085,6 +14426,7 @@ class SecurityManager {
     this.pinBuffer = '';
     this.bound = false;
     this.cooldownTimer = null;
+    this.lockClockTimer = null;
   }
 
   /* ---------------- config ---------------- */
@@ -14303,6 +14645,7 @@ class SecurityManager {
     screen.classList.add('visible');
     this.renderLockScreen();
     this.bindLockScreen();
+    this.startLockClock();
 
     const cfg = this.getConfig();
     if (cfg.bioEnabled && cfg.bioCredId) {
@@ -14315,6 +14658,7 @@ class SecurityManager {
     const screen = document.getElementById('app-lock-screen');
     this.locked = false;
     this.pinBuffer = '';
+    this.stopLockClock();
     const cfg = this.getConfig();
     cfg.fails = 0; cfg.lockedUntil = 0;
     this.saveConfig(cfg);
@@ -14330,6 +14674,7 @@ class SecurityManager {
     const setTxt = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
 
     setTxt('lock-title', this.t('lock_title'));
+    setTxt('lock-status-label', this.t('app_lock'));
     setTxt('lock-subtitle', isPin ? this.t('lock_sub_pin') : this.t('lock_sub_pass'));
     setTxt('lock-error', '');
     setTxt('lock-attempts', '');
@@ -14371,6 +14716,28 @@ class SecurityManager {
       html += `<span class="lock-dot ${i < this.pinBuffer.length ? 'filled' : ''}"></span>`;
     }
     dots.innerHTML = html;
+  }
+
+  /* ---------------- lock screen clock (time + date) ---------------- */
+  startLockClock() {
+    const tickClock = () => {
+      const timeEl = document.getElementById('lock-time');
+      const dateEl = document.getElementById('lock-date');
+      if (!timeEl && !dateEl) return;
+      const now = new Date();
+      const locale = this.isFa() ? 'fa-IR' : 'en-US';
+      try {
+        if (timeEl) timeEl.textContent = now.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
+        if (dateEl) dateEl.textContent = now.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long' });
+      } catch (e) { /* ignore locale quirks */ }
+    };
+    tickClock();
+    if (this.lockClockTimer) clearInterval(this.lockClockTimer);
+    this.lockClockTimer = setInterval(tickClock, 15000);
+  }
+
+  stopLockClock() {
+    if (this.lockClockTimer) { clearInterval(this.lockClockTimer); this.lockClockTimer = null; }
   }
 
   bindLockScreen() {
@@ -14415,13 +14782,27 @@ class SecurityManager {
     if (passForm) {
       passForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        if (this.inCooldown()) return;
+        if (this.inCooldown() || this.unlocking) return;
         const input = document.getElementById('lock-pass-input');
         const val = input ? input.value : '';
         if (!val) return;
+        this.unlocking = true;
         const ok = await this.verifySecret(val);
+        this.unlocking = false;
         if (ok) { this.unlock(); }
         else { if (input) input.value = ''; this.onWrongAttempt(); }
+      });
+    }
+
+    const passEye = document.getElementById('lock-pass-eye');
+    if (passEye) {
+      passEye.addEventListener('click', () => {
+        const input = document.getElementById('lock-pass-input');
+        if (!input) return;
+        const showing = input.type === 'text';
+        input.type = showing ? 'password' : 'text';
+        passEye.classList.toggle('is-on', !showing);
+        if (!showing) { try { input.focus({ preventScroll: true }); } catch (e) { input.focus(); } }
       });
     }
 
@@ -14433,8 +14814,11 @@ class SecurityManager {
   }
 
   async trySubmitPin() {
+    if (this.unlocking) return;
     const pin = this.pinBuffer;
+    this.unlocking = true;
     const ok = await this.verifySecret(pin);
+    this.unlocking = false;
     if (ok) { this.unlock(); return; }
     this.pinBuffer = '';
     this.renderDots();
@@ -14821,8 +15205,8 @@ class WalioApp {
     // On the very first launch, play the branded intro before onboarding.
     this.runFirstLaunchExperience();
 
-    // 1s circular loader on every start (skipped on the welcome screen).
-    this.runBootLoader(1000);
+    // Single circular loading on start (skipped on the welcome screen).
+    this.runBootLoader(700);
     this.setupResumeLoader();
 
     if (window.currency) {
@@ -14911,10 +15295,10 @@ class WalioApp {
 
   /* ---------------- boot loader ---------------- */
   /**
-   * Simple 1-second circular loader on every start/resume.
+   * Minimal single circular loader on start and resume.
    * Skipped entirely while the first-launch welcome screen is pending.
    */
-  runBootLoader(duration = 1000) {
+  runBootLoader(duration = 700) {
     const loader = document.getElementById('walio-boot-loader');
     const html = document.documentElement;
 
@@ -14945,7 +15329,7 @@ class WalioApp {
     loader.classList.add('is-hiding');
     window.setTimeout(() => {
       loader.classList.remove('is-visible', 'is-hiding');
-    }, 340);
+    }, 240);
   }
 
   /**
@@ -14964,7 +15348,7 @@ class WalioApp {
         // Auto theme may need to change if a lot of time passed.
         this.applyTheme();
         this.updateHeaderThemeIcon();
-        this.runBootLoader(1000);
+        this.runBootLoader(700);
       }
     });
 
@@ -14973,7 +15357,7 @@ class WalioApp {
       if (e.persisted) {
         this.applyTheme();
         this.updateHeaderThemeIcon();
-        this.runBootLoader(1000);
+        this.runBootLoader(700);
       }
     });
   }
@@ -17274,143 +17658,6 @@ class WalioApp {
   setupQuickActions() {}
 }
 
-
-/* ================= Walio: native sheets + toasts (Emil / Apple) ================= */
-(function () {
-  const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function toast(message, type) {
-    const host = document.getElementById('walio-toaster');
-    if (!host) return;
-    const el = document.createElement('div');
-    el.className = 'walio-toast' + (type === 'error' ? ' error' : '');
-    el.setAttribute('role', 'status');
-    const ok = type === 'error'
-      ? '<svg class="walio-toast-icon" viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="10" r="7"/><path d="M10 6v5M10 14h.01"/></svg>'
-      : '<svg class="walio-toast-icon" viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10l4 4 8-8"/></svg>';
-    el.innerHTML = ok + '<span></span>';
-    el.querySelector('span').textContent = String(message == null ? '' : message);
-    host.appendChild(el);
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () { el.classList.add('show'); });
-    });
-
-    let startY = 0, lastY = 0, lastT = 0, vy = 0, dragging = false;
-    const dismiss = function () {
-      if (el.dataset.gone) return;
-      el.dataset.gone = '1';
-      el.classList.add('is-leaving');
-      el.classList.remove('show');
-      window.setTimeout(function () { el.remove(); }, reduced ? 0 : 240);
-    };
-    el.addEventListener('pointerdown', function (e) {
-      if (e.button) return;
-      dragging = true;
-      startY = lastY = e.clientY;
-      lastT = performance.now();
-      try { el.setPointerCapture(e.pointerId); } catch (err) {}
-      el.style.transition = 'none';
-    });
-    el.addEventListener('pointermove', function (e) {
-      if (!dragging) return;
-      const now = performance.now();
-      const dy = Math.max(0, e.clientY - startY);
-      vy = (e.clientY - lastY) / Math.max(1, now - lastT);
-      lastY = e.clientY; lastT = now;
-      el.style.transform = 'translateY(' + dy + 'px)';
-      el.style.opacity = String(Math.max(0.35, 1 - dy / 140));
-    });
-    const endDrag = function () {
-      if (!dragging) return;
-      dragging = false;
-      el.style.transition = '';
-      const dy = Math.max(0, lastY - startY);
-      if (dy > 48 || vy > 0.45) dismiss();
-      else { el.style.transform = ''; el.style.opacity = ''; el.classList.add('show'); }
-    };
-    el.addEventListener('pointerup', endDrag);
-    el.addEventListener('pointercancel', endDrag);
-    window.setTimeout(dismiss, 3400);
-  }
-  window.walioToast = toast;
-  window.alert = function (msg) { toast(msg); };
-
-  function closeOverlay(overlay) {
-    if (!overlay) return;
-    overlay.classList.remove('open');
-    document.body.style.overflow = '';
-    const sheet = overlay.querySelector('.modal-sheet');
-    if (sheet) {
-      sheet.classList.remove('is-dragging');
-      sheet.style.transform = '';
-    }
-  }
-
-  function bindSheet(overlay) {
-    const sheet = overlay.querySelector('.modal-sheet');
-    if (!sheet || sheet.dataset.dragBound) return;
-    sheet.dataset.dragBound = '1';
-    const grab = sheet.querySelector('.sheet-grabber, .modal-sheet-header');
-    let startY = 0, y = 0, lastY = 0, lastT = 0, vy = 0, dragging = false, grabbing = false;
-
-    sheet.addEventListener('pointerdown', function (e) {
-      if (e.button) return;
-      const t = e.target;
-      if (t.closest('input, textarea, select, button, a, .cat-pill, .time-range-pill, .tx-type-btn, .color-swatch, .icon-swatch')) return;
-      const inHandle = !!(grab && grab.contains(t));
-      const atTop = sheet.scrollTop <= 0;
-      if (!inHandle && !atTop) return;
-      grabbing = true;
-      dragging = false;
-      startY = lastY = e.clientY;
-      lastT = performance.now();
-      vy = 0; y = 0;
-      try { sheet.setPointerCapture(e.pointerId); } catch (err) {}
-    });
-
-    sheet.addEventListener('pointermove', function (e) {
-      if (!grabbing) return;
-      const now = performance.now();
-      const dy = e.clientY - startY;
-      vy = (e.clientY - lastY) / Math.max(1, now - lastT);
-      lastY = e.clientY; lastT = now;
-      if (!dragging && dy > 8) {
-        dragging = true;
-        sheet.classList.add('is-dragging');
-      }
-      if (!dragging) return;
-      e.preventDefault();
-      y = dy < 0 ? dy * 0.18 : dy;
-      sheet.style.transform = 'translateY(' + y + 'px)';
-      overlay.style.opacity = String(Math.max(0.35, 1 - Math.max(0, y) / (sheet.offsetHeight || 480)));
-    }, { passive: false });
-
-    const onUp = function () {
-      if (!grabbing) return;
-      grabbing = false;
-      sheet.classList.remove('is-dragging');
-      overlay.style.opacity = '';
-      const h = sheet.offsetHeight || 480;
-      const shouldClose = y > h * 0.28 || vy > 0.7;
-      sheet.style.transform = '';
-      if (shouldClose) closeOverlay(overlay);
-      y = 0; vy = 0; dragging = false;
-    };
-    sheet.addEventListener('pointerup', onUp);
-    sheet.addEventListener('pointercancel', onUp);
-  }
-
-  function bootNative() {
-    document.querySelectorAll('.modal-overlay').forEach(bindSheet);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', bootNative);
-  } else {
-    bootNative();
-  }
-})();
-
 window.addEventListener('DOMContentLoaded', () => {
   if (window.security) window.security.boot();
   window.walioApp = new WalioApp();
@@ -17418,5 +17665,171 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
   </script>
-</body>
+<script>
+/* ==================== External EVM wallet integration ====================
+ * Uses EIP-1193 injected wallets and WalletConnect v2 (Reown Ethereum Provider).
+ * Only public address, chain, and connector preference are persisted. Never ask
+ * for, read, or store a seed phrase, private key, or wallet password.
+ */
+(function () {
+  'use strict';
+  const STORE_KEY = 'walio_external_wallet_public_v1';
+  const WC_ID_KEY = 'walio_walletconnect_project_id';
+  const CHAINS = {
+    '0x1': { name:'Ethereum', symbol:'ETH', priceId:'ethereum', rpc:'https://ethereum-rpc.publicnode.com', tokens:[
+      {symbol:'USDT',address:'0xdAC17F958D2ee523a2206206994597C13D831ec7'},
+      {symbol:'USDC',address:'0xA0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'}]},
+    '0x89': { name:'Polygon', symbol:'POL', priceId:'polygon-ecosystem-token', rpc:'https://polygon-bor-rpc.publicnode.com', tokens:[
+      {symbol:'USDT',address:'0xc2132D05D31c914a87C6611C10748AEb04B58e8F'},
+      {symbol:'USDC',address:'0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'}]},
+    '0xa4b1': { name:'Arbitrum One', symbol:'ETH', priceId:'ethereum', rpc:'https://arbitrum-one-rpc.publicnode.com', tokens:[
+      {symbol:'USDT',address:'0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9'},
+      {symbol:'USDC',address:'0xaf88d065e77c8cC2239327C5EDb3A432268e5831'}]},
+    '0xa': { name:'Optimism', symbol:'ETH', priceId:'ethereum', rpc:'https://optimism-rpc.publicnode.com', tokens:[
+      {symbol:'USDT',address:'0x94b008aA00579c1307B0EF2c499aD98a8ce58e58'},
+      {symbol:'USDC',address:'0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85'}]},
+    '0x2105': { name:'Base', symbol:'ETH', priceId:'ethereum', rpc:'https://base-rpc.publicnode.com', tokens:[
+      {symbol:'USDC',address:'0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'}]},
+    '0x38': { name:'BNB Smart Chain', symbol:'BNB', priceId:'binancecoin', rpc:'https://bsc-rpc.publicnode.com', tokens:[
+      {symbol:'USDT',address:'0x55d398326f99059fF775485246999027B3197955'},
+      {symbol:'USDC',address:'0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d'}]}
+  };
+  let provider=null, providerKind='', wcProvider=null, busy=false, refreshTimer=null;
+  const nativeDecimals=18;
+  const readSaved=()=>{try{return JSON.parse(localStorage.getItem(STORE_KEY)||'null')}catch(e){return null}};
+  const savePublic=(data)=>{try{if(data)localStorage.setItem(STORE_KEY,JSON.stringify(data));else localStorage.removeItem(STORE_KEY)}catch(e){}};
+  const isFa=()=>!!(window.i18n&&window.i18n.currentLang==='fa');
+  const txt=(en,fa)=>isFa()?fa:en;
+  const el=()=>document.getElementById('walio-external-wallet-body');
+  const short=(a)=>a?`${a.slice(0,6)}…${a.slice(-4)}`:'';
+  const esc=(s)=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const fmt=(n,d=6)=>new Intl.NumberFormat(isFa()?'fa-IR':'en-US',{maximumFractionDigits:d}).format(Number(n)||0);
+  function status(message,error){const n=el()?.querySelector('#walio-wallet-status');if(n){n.textContent=message||'';n.classList.toggle('error',!!error)}}
+  function renderBase(){
+    const box=el(); if(!box)return;
+    let saved='';try{saved=localStorage.getItem(WC_ID_KEY)||''}catch(e){}
+    box.innerHTML=`<div class="external-wallet-connected" id="walio-wallet-card">
+      <div class="external-wallet-ident"><strong id="walio-wallet-address">${txt('No wallet connected','کیف پولی متصل نیست')}</strong><span id="walio-wallet-network">${txt('Connect an existing wallet','اتصال کیف پول موجود')}</span></div>
+      <div class="external-wallet-total" id="walio-wallet-total">—</div>
+      <div class="external-wallet-assets" id="walio-wallet-assets"></div>
+      <div class="external-wallet-actions"><button type="button" class="external-wallet-btn" id="walio-wallet-connect">${txt('Connect Wallet','اتصال کیف پول')}</button><button type="button" class="external-wallet-btn secondary" id="walio-wallet-refresh" hidden>${txt('Refresh balance','به‌روزرسانی موجودی')}</button><button type="button" class="external-wallet-btn secondary" id="walio-wallet-disconnect" hidden>${txt('Disconnect Wallet','قطع اتصال کیف پول')}</button></div>
+      <p class="external-wallet-status" id="walio-wallet-status" role="status"></p>
+      <div class="external-wallet-config"><input id="walio-wc-project-id" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="${txt('Optional: Reown / WalletConnect Project ID','اختیاری: شناسه پروژه Reown / WalletConnect')}" aria-label="WalletConnect Project ID" value="${esc(saved)}"><button type="button" id="walio-wc-save">${txt('Save ID','ذخیره شناسه')}</button></div>
+      <p class="external-wallet-footnote">${txt('MetaMask and other EIP-1193 wallets connect directly. WalletConnect needs a public Reown project ID from','اتصال مستقیم با MetaMask و کیف پول‌های EIP-1193 امکان‌پذیر است. WalletConnect به شناسه عمومی پروژه Reown نیاز دارد:')} <a href="https://cloud.reown.com" target="_blank" rel="noopener noreferrer">cloud.reown.com</a>. ${txt('Walio only reads public on-chain data; no signing or transfers.','والیو فقط داده‌های عمومی زنجیره را می‌خواند؛ امضا یا انتقالی انجام نمی‌شود.')}</p>
+    </div>`;
+    box.querySelector('#walio-wallet-connect').addEventListener('click',connect);
+    box.querySelector('#walio-wallet-refresh').addEventListener('click',()=>refresh(true));
+    box.querySelector('#walio-wallet-disconnect').addEventListener('click',disconnect);
+    box.querySelector('#walio-wc-save').addEventListener('click',()=>{const id=box.querySelector('#walio-wc-project-id').value.trim();try{if(id)localStorage.setItem(WC_ID_KEY,id);else localStorage.removeItem(WC_ID_KEY)}catch(e){}status(id?txt('Project ID saved on this device.','شناسه پروژه در این دستگاه ذخیره شد.'):txt('Project ID cleared.','شناسه پروژه پاک شد.'))});
+  }
+  function renderState(address,chainId){
+    const box=el();if(!box)return;
+    const a=box.querySelector('#walio-wallet-address'),n=box.querySelector('#walio-wallet-network');
+    if(a)a.textContent=address?`${short(address)} · ${providerKind==='walletconnect'?'WalletConnect':txt('External wallet','کیف پول خارجی')}`:txt('No wallet connected','کیف پولی متصل نیست');
+    if(n)n.textContent=chainId?(CHAINS[String(chainId).toLowerCase()]?.name||`${txt('Network','شبکه')} ${chainId}`):txt('Connect an existing wallet','اتصال کیف پول موجود');
+    const connected=!!address;
+    const connectBtn=box.querySelector('#walio-wallet-connect'),refreshBtn=box.querySelector('#walio-wallet-refresh'),disc=box.querySelector('#walio-wallet-disconnect');
+    if(connectBtn)connectBtn.hidden=connected;if(refreshBtn)refreshBtn.hidden=!connected;if(disc)disc.hidden=!connected;
+    if(!connected){box.querySelector('#walio-wallet-total').textContent='—';box.querySelector('#walio-wallet-assets').innerHTML='';}
+  }
+  async function wcConnect(projectId,restoreOnly=false){
+    if(!projectId)throw new Error(txt('Add a Reown project ID below to use WalletConnect.','برای استفاده از WalletConnect شناسه پروژه Reown را در پایین وارد کنید.'));
+    if(!/^https:/.test(location.protocol)&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1')throw new Error(txt('Wallet connections require HTTPS or localhost.','اتصال کیف پول به HTTPS یا localhost نیاز دارد.'));
+    status(txt('Opening WalletConnect…','در حال باز کردن WalletConnect…'));
+    const mod=await import('https://esm.sh/@walletconnect/ethereum-provider@2.21.1?bundle');
+    const EthereumProvider=mod.default||mod.EthereumProvider;
+    wcProvider=await EthereumProvider.init({projectId,chains:[1],optionalChains:[137,42161,10,8453,56],showQrModal:true,metadata:{name:'Walio',description:'Personal finance app — external wallet connection',url:location.origin,icons:[]},methods:['eth_accounts','eth_chainId'],events:['chainChanged','accountsChanged']});
+    const prior=readSaved();
+    if(!wcProvider.session) { if(restoreOnly) return null; await wcProvider.connect(); }
+    else {try{await wcProvider.connect({chains:[Number(prior?.chainId)||1]})}catch(e){/* session may already be active */}}
+    return wcProvider;
+  }
+  async function connect(){
+    if(busy)return;busy=true;const btn=el()?.querySelector('#walio-wallet-connect');if(btn){btn.disabled=true;btn.textContent=txt('Connecting…','در حال اتصال…')}
+    try{
+      let p=window.ethereum;
+      if(p&&Array.isArray(p.providers)&&p.providers.length)p=p.providers.find(x=>x.isMetaMask)||p.providers[0];
+      if(p&&typeof p.request==='function')providerKind='injected';
+      else {providerKind='walletconnect';let id='';try{id=localStorage.getItem(WC_ID_KEY)||''}catch(e){};const field=el()?.querySelector('#walio-wc-project-id');if(field?.value.trim()){id=field.value.trim();try{localStorage.setItem(WC_ID_KEY,id)}catch(e){}};p=await wcConnect(id)}
+      provider=p;
+      const accounts=await provider.request({method:providerKind==='walletconnect'?'eth_accounts':'eth_requestAccounts'});
+      if(!accounts||!accounts[0])throw new Error(txt('The wallet returned no account.','کیف پول حسابی برنگرداند.'));
+      const chainId=await provider.request({method:'eth_chainId'});
+      attachEvents(provider);savePublic({address:accounts[0],chainId:String(chainId),kind:providerKind});renderState(accounts[0],chainId);status(txt('Connected. Reading on-chain balances…','متصل شد. در حال خواندن موجودی زنجیره…'));
+      await refresh(false);
+    }catch(e){const msg=e?.code===4001?txt('Connection was rejected in the wallet.','درخواست اتصال در کیف پول رد شد.'):txt(e?.message||'Wallet connection failed.','اتصال کیف پول ناموفق بود.');status(msg,true);if(providerKind==='walletconnect')provider=null}
+    finally{busy=false;const b=el()?.querySelector('#walio-wallet-connect');if(b){b.disabled=false;b.textContent=txt('Connect Wallet','اتصال کیف پول')} }
+  }
+  function attachEvents(p){
+    if(!p||!p.on)return;
+    p.removeListener?.('accountsChanged',onAccounts);p.removeListener?.('chainChanged',onChain);p.removeListener?.('disconnect',onProviderDisconnect);
+    p.on('accountsChanged',onAccounts);p.on('chainChanged',onChain);p.on('disconnect',onProviderDisconnect);
+  }
+  function onAccounts(accounts){if(!accounts||!accounts.length){renderState('',null);savePublic(null);status(txt('Wallet account disconnected.','حساب کیف پول قطع شد.'));return}const prior=readSaved()||{};savePublic({...prior,address:accounts[0]});renderState(accounts[0],prior.chainId);refresh(false)}
+  function onChain(chain){const prior=readSaved()||{};savePublic({...prior,chainId:String(chain)});renderState(prior.address,chain);refresh(false)}
+  function onProviderDisconnect(){provider=null;savePublic(null);renderState('',null);status(txt('Wallet disconnected.','کیف پول قطع شد.'))}
+  function toHex(n){return '0x'+BigInt(n).toString(16)}
+  async function rpc(p,method,params){return p.request({method,params})}
+  async function rpcRead(network,method,params){const response=await fetch(network.rpc,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:Date.now(),method,params})});if(!response.ok)throw new Error('RPC HTTP '+response.status);const data=await response.json();if(data.error)throw new Error(data.error.message||'RPC request failed');return data.result}
+  async function tokenAmount(p,token,address){
+    const callData='0x70a08231'+address.toLowerCase().replace('0x','').padStart(64,'0');
+    const net=CHAINS[String(await rpc(p,'eth_chainId')).toLowerCase()]; if(!net) return 0;
+    const raw=await rpcRead(net,'eth_call',[{to:token.address,data:callData},'latest']);
+    const balance=BigInt(raw||'0x0');
+    if(balance===0n)return 0;
+    let dec=6;try{dec=Number(BigInt(await rpcRead(net,'eth_call',[{to:token.address,data:'0x313ce567'},'latest'])))}catch(e){if(token.symbol==='USDC'||token.symbol==='USDT')dec=6}
+    return Number(balance)/Math.pow(10,Number.isFinite(dec)&&dec>=0&&dec<=36?dec:6);
+  }
+  async function getPrices(chain){
+    const ids=[chain?.priceId].filter(Boolean).join(',');
+    if(!ids)return {};
+    try{const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids='+encodeURIComponent(ids)+'&vs_currencies=usd',{cache:'no-store'});if(!r.ok)throw 0;return await r.json()}catch(e){return {}}
+  }
+  async function refresh(showMessage){
+    if(!provider)return;
+    const box=el();if(!box)return;
+    try{
+      const [accounts,chainId]=await Promise.all([rpc(provider,'eth_accounts'),rpc(provider,'eth_chainId')]);
+      if(!accounts?.[0])return;
+      const addr=accounts[0],key=String(chainId).toLowerCase(),network=CHAINS[key]||null;
+      const prior=readSaved()||{};savePublic({...prior,address:addr,chainId:String(chainId),kind:providerKind});renderState(addr,chainId);
+      if(!network) { const nativeRaw=await rpc(provider,'eth_getBalance',[addr,'latest']); const amount=Number(BigInt(nativeRaw||'0x0'))/1e18; box.querySelector('#walio-wallet-assets').innerHTML=`<div class="external-wallet-asset"><div class="external-wallet-asset-name">${txt('Native coin','ارز بومی')}</div><div class="external-wallet-asset-amount">${fmt(amount,6)}<span class="external-wallet-asset-usd">${txt('Network not supported for USD pricing','قیمت دلاری شبکه پشتیبانی نمی‌شود')}</span></div></div>`;box.querySelector('#walio-wallet-total').textContent='—';status(txt('Connected. This network is not configured for token and price lookups.','متصل شد. این شبکه برای بررسی توکن و قیمت پیکربندی نشده است.'),true);return;}
+      const nativeRaw=await rpcRead(network,'eth_getBalance',[addr,'latest']);
+      const native=Number(BigInt(nativeRaw||'0x0'))/1e18;
+      const balances=[{symbol:network?.symbol||txt('Native coin','ارز بومی'),amount:native,priceKey:network?.priceId,stable:false}];
+      if(network?.tokens?.length){const values=await Promise.all(network.tokens.map(async t=>{try{return {symbol:t.symbol,amount:await tokenAmount(provider,t,addr),stable:true}}catch(e){return {symbol:t.symbol,amount:null,stable:true}}}));balances.push(...values)}
+      const prices=await getPrices(network);
+      const nativePrice=network?.priceId?Number(prices[network.priceId]?.usd)||null:null;
+      let total=0,priced=true;
+      balances.forEach(b=>{if(b.amount==null){priced=false;b.usd=null;return}b.price=b.stable?1:nativePrice;if(b.price==null){if(b.amount>0)priced=false;b.usd=null}else{b.usd=b.amount*b.price;total+=b.usd}});
+      const totalEl=box.querySelector('#walio-wallet-total');if(totalEl)totalEl.textContent=priced?'≈ $'+fmt(total,2):'≈ $'+fmt(total,2)+'+';
+      const assetEl=box.querySelector('#walio-wallet-assets');if(assetEl)assetEl.innerHTML=balances.map(b=>`<div class="external-wallet-asset"><div class="external-wallet-asset-name">${esc(b.symbol)}${b.stable?' · '+txt('token','توکن'):''}</div><div class="external-wallet-asset-amount">${b.amount==null?txt('Unavailable','در دسترس نیست'):fmt(b.amount,6)}<span class="external-wallet-asset-usd">${b.usd==null?txt('USD quote unavailable','قیمت دلاری در دسترس نیست'):'≈ $'+fmt(b.usd,2)}</div></div>`).join('');
+      status(txt('Balance updated from the connected network.','موجودی از شبکه متصل به‌روزرسانی شد.')+(network?.tokens?.length?'':txt(' No USDT/USDC contracts are configured for this chain.',' قرارداد USDT/USDC برای این شبکه تعریف نشده است.')));
+    }catch(e){status(txt('Could not read the wallet balance: ','خواندن موجودی کیف پول ممکن نشد: ')+(e?.message||''),true)}
+  }
+  async function disconnect(){
+    const old=provider,kind=providerKind;provider=null;providerKind='';
+    try{if(kind==='walletconnect'&&old?.disconnect)await old.disconnect()}catch(e){}
+    savePublic(null);renderState('',null);status(txt('Disconnected from Walio. Your wallet itself is unchanged.','اتصال به والیو قطع شد؛ خود کیف پول تغییری نکرده است.'));
+  }
+  async function restore(){
+    const saved=readSaved();if(!saved?.address)return;
+    try{
+      if(saved.kind==='walletconnect'){
+        let id='';try{id=localStorage.getItem(WC_ID_KEY)||''}catch(e){};if(!id)return;
+        providerKind='walletconnect';wcProvider=await wcConnect(id,true);if(!wcProvider)return;provider=wcProvider;
+      }else{
+        let p=window.ethereum;if(p&&Array.isArray(p.providers)&&p.providers.length)p=p.providers.find(x=>x.isMetaMask)||p.providers[0];if(!p?.request)return;
+        const accounts=await rpc(p,'eth_accounts');if(!accounts?.some(a=>a.toLowerCase()===saved.address.toLowerCase()))return;
+        providerKind='injected';provider=p;
+      }
+      attachEvents(provider);const accounts=await rpc(provider,'eth_accounts');if(accounts?.[0]){renderState(accounts[0],await rpc(provider,'eth_chainId'));await refresh(false)}
+    }catch(e){/* No auto prompt on page load; restore only an established session. */}
+  }
+  function init(){renderBase();const saved=readSaved();if(saved?.address){renderState(saved.address,saved.chainId);status(txt('Restoring public wallet session…','در حال بازیابی نشست عمومی کیف پول…'));restore()}document.addEventListener('visibilitychange',()=>{if(!document.hidden&&provider)refresh(false)});const mount=()=>{if(!el())return;renderBase();const current=readSaved();if(provider&&current?.address){renderState(current.address,current.chainId);refresh(false)}else if(current?.address){renderState(current.address,current.chainId);restore()}};const tab=document.getElementById('tab-wallets');if(tab&&window.MutationObserver){new MutationObserver(records=>{if(records.some(r=>Array.from(r.addedNodes).some(n=>n.nodeType===1&&(n.id==='walio-external-wallet'||n.querySelector?.('#walio-external-wallet')))))mount()}).observe(tab,{childList:true,subtree:true})}window.addEventListener('walio_wallets_updated',()=>{});}
+  document.addEventListener('DOMContentLoaded',init);
+  window.walioExternalWallet={refresh:()=>refresh(true),disconnect};
+})();
+</script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a31ab9567ef82362',t:'MTc4NzgzMDAxNA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a31bbbd58fd9a895',t:'MTc4Nzg0MDYwMg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a323cc45cd40d93d',t:'MTc4NzkyNTE2MQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a3b73dd5bcb999fb',t:'MTc4OTQ3MTIyMA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a3b7b9b30cb6d64d',t:'MTc4OTQ3NjI5Mw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a401f4f74f95be4c',t:'MTc5MDI1NDY2Nw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4026fc889e62419',t:'MTc5MDI1OTY5OA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
