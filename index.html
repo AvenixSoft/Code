@@ -10379,6 +10379,27 @@ html.walio-booting body {
 }
 
 
+
+
+/* New Wallets chooser and external-wallet subtotal (additive UI) */
+.wallet-choice-panel { margin:16px 0 18px;padding:18px;border:1px solid var(--border-glass);border-radius:22px;background:var(--card-bg);color:var(--text-primary); }
+.wallet-choice-panel[hidden],.external-crypto-wallet[hidden],.external-wallet-connect-form[hidden] { display:none !important; }
+.wallet-choice-heading h2 { margin:4px 0 13px;color:var(--text-primary);font-size:18px;font-weight:750; }
+.wallet-choice-grid { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px; }
+.wallet-choice-option { min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:7px;padding:14px;border:1px solid var(--border-glass);border-radius:16px;background:var(--glass-bg);color:var(--text-primary);text-align:left;cursor:pointer; }
+.wallet-choice-option:hover { border-color:var(--accent-primary);transform:translateY(-1px); }
+.wallet-choice-icon { display:grid;place-items:center;width:34px;height:34px;border-radius:12px;background:var(--accent-gradient);color:#fff;font-size:20px; }
+.wallet-choice-option strong { font-size:13px; }
+.wallet-choice-option small { color:var(--text-secondary);font-size:10px;line-height:1.45; }
+.external-wallet-total-summary { margin:-2px 0 10px;color:var(--text-secondary);font-size:11px;line-height:1.5; }
+.external-wallet-total-summary[hidden] { display:none !important; }
+.home-external-wallet-summary { margin-top:4px;margin-bottom:4px; }
+.external-wallet-connect-form { margin:14px 0 0;padding-top:13px;border-top:1px solid var(--border-subtle); }
+.external-wallet-connect-form label { display:block;margin:0 0 6px;color:var(--text-secondary);font-size:11px;font-weight:650; }
+.external-wallet-connect-form input { width:100%;height:40px;margin-bottom:10px;padding:0 11px;border:1px solid var(--border-glass);border-radius:11px;background:var(--bg-sub);color:var(--text-primary);font:inherit;font-size:13px; }
+.external-wallet-config-caption { margin:2px 0 6px;color:var(--text-muted);font-size:10px;line-height:1.5; }
+@media (max-width:390px) { .wallet-choice-grid { grid-template-columns:1fr; } }
+
 /* ================= EXTERNAL CRYPTO WALLET (additive feature) ================= */
 .external-crypto-wallet {
   margin: 18px 0 28px;
@@ -10417,6 +10438,31 @@ html.walio-booting body {
 .external-wallet-footnote a { color:var(--accent-primary); }
 @media (max-width:380px) { .external-crypto-wallet { padding:15px; }.external-wallet-ident { align-items:flex-start;flex-direction:column; } }
 
+/* New Wallets uses Walio's standard rising modal sheet, matching New Transaction. */
+.wallet-new-overlay { z-index:1100; }
+.wallet-new-sheet { max-height:90vh;max-height:90dvh;padding:22px 20px max(env(safe-area-inset-bottom),24px); }
+.wallet-new-sheet .modal-sheet-header { margin-bottom:14px; }
+.wallet-new-sheet-intro h4,.wallet-new-connect-view h4 { margin:8px 0 6px;font-size:19px;font-weight:780;line-height:1.3;color:var(--text-primary); }
+.wallet-new-sheet-intro > p,.wallet-new-connect-intro { margin:0 0 17px;color:var(--text-secondary);font-size:12px;line-height:1.6; }
+.wallet-new-sheet-badge { width:42px;height:42px;display:grid;place-items:center;border-radius:14px;background:var(--accent-gradient);color:#fff;font-weight:850;font-size:20px; }
+.wallet-new-sheet-badge.crypto { background:rgba(79,70,229,.12);border:1px solid rgba(79,70,229,.16);color:var(--accent-primary); }
+.wallet-new-sheet .wallet-choice-grid { display:grid;grid-template-columns:1fr;gap:10px;margin-top:15px; }
+.wallet-new-sheet .wallet-choice-option { width:100%;min-height:78px;display:grid;grid-template-columns:42px minmax(0,1fr) 20px;align-items:center;gap:11px;padding:12px;border:1px solid var(--border-glass);border-radius:17px;background:var(--glass-bg);color:var(--text-primary);text-align:start;cursor:pointer; }
+.wallet-new-sheet .wallet-choice-option:hover { border-color:var(--accent-primary);background:var(--card-bg); }
+.wallet-new-sheet .wallet-choice-icon { width:40px;height:40px;border-radius:13px;background:rgba(79,70,229,.12);border:1px solid rgba(79,70,229,.16);color:var(--accent-primary); }
+[data-theme="dark"] .wallet-new-sheet .wallet-choice-icon,[data-theme="dark"] .wallet-new-sheet-badge.crypto { background:rgba(99,102,241,.2);border-color:rgba(129,140,248,.24);color:#a5b4fc; }
+.wallet-new-sheet .wallet-choice-copy { display:flex;flex-direction:column;gap:4px; }
+.wallet-new-sheet .wallet-choice-copy strong { font-size:12px;font-weight:750; }
+.wallet-new-sheet .wallet-choice-copy small { color:var(--text-secondary);font-size:10px;line-height:1.45; }
+.wallet-new-sheet .wallet-choice-arrow { color:var(--text-muted); }
+.wallet-new-back-link { display:flex;align-items:center;gap:6px;margin:0 0 15px;padding:0;border:0;background:none;color:var(--text-secondary);font:inherit;font-size:12px;cursor:pointer; }
+.wallet-new-back-link[hidden],.wallet-new-connect-view[hidden] { display:none !important; }
+.wallet-new-connect-view .tool-input-row { margin-bottom:13px; }
+.wallet-new-connect-view .external-wallet-config-caption { margin:6px 0 0;color:var(--text-muted);font-size:10px;line-height:1.5; }
+.wallet-new-connect-view .external-wallet-config-caption a { color:var(--accent-primary); }
+.wallet-new-connect-view .external-wallet-status { min-height:18px;margin:3px 0 10px; }
+.wallet-new-cancel { display:block;width:100%;margin-top:10px;padding:11px;border:1px solid var(--border-glass);border-radius:14px;background:var(--glass-bg);color:var(--text-primary);font:inherit;font-size:13px;font-weight:650;cursor:pointer; }
+@media (max-width:380px) { .wallet-new-sheet { padding-left:16px;padding-right:16px; }.wallet-new-sheet .wallet-choice-option { grid-template-columns:38px minmax(0,1fr) 18px;gap:8px;padding:10px; } }
 </style>
 <script>
 /*
@@ -12513,6 +12559,11 @@ class WalletManager {
   renderWalletsPage(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
+    // The Wallets page isolates/positions its children for its blue background.
+    // Remove the previous sheet before re-rendering, then portal the new sheet
+    // next to New Transaction under .mobile-frame so it has the same fixed layer.
+    const previousWalletSheet = document.getElementById('walio-wallet-options');
+    if (previousWalletSheet && !container.contains(previousWalletSheet)) previousWalletSheet.remove();
 
     const wallets = window.storage ? window.storage.getWallets() : [];
     const transactions = window.storage ? window.storage.getTransactions() : [];
@@ -12520,7 +12571,10 @@ class WalletManager {
     const t = (key) => window.i18n ? window.i18n.t(key) : key;
     const isFa = window.i18n && window.i18n.currentLang === 'fa';
 
-    const totalBalance = wallets.reduce((sum, w) => sum + (parseFloat(w.balance) || 0), 0);
+    const offlineTotalBalance = wallets.reduce((sum, w) => sum + (parseFloat(w.balance) || 0), 0);
+    const externalSummary = window.walioExternalWallet?.getSummary?.() || null;
+    const externalToman = window.walioExternalWallet?.getContributionToman?.() || 0;
+    const totalBalance = offlineTotalBalance + externalToman;
     const now = new Date();
     const monthTx = transactions.filter(tx => {
       const d = new Date(tx.date);
@@ -12595,11 +12649,12 @@ class WalletManager {
             <span class="wallets-hero-label" data-i18n="portfolio_balance">${t('portfolio_balance')}</span>
             <button type="button" class="wallets-privacy-btn" id="wallets-toggle-privacy" aria-label="Toggle balance">${eyeSVG}</button>
           </div>
-          <strong class="wallets-hero-value">${formatMoney(totalBalance)}</strong>
+          <strong class="wallets-hero-value" id="walio-portfolio-total" data-base-balance="${offlineTotalBalance}" data-hide-balance="${hideBalance ? '1' : '0'}">${formatMoney(totalBalance)}</strong>
+          <div class="external-wallet-total-summary" id="walio-portfolio-crypto-summary" ${externalSummary?.address ? '' : 'hidden'}></div>
           <div class="wallets-hero-meta">
             <span class="wallets-hero-pill-stat">
               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="6" width="19" height="13" rx="3"/><path d="M2.5 10h19"/></svg>
-              ${wallets.length} ${t('active_accounts')}
+              ${wallets.length + (externalSummary?.address ? 1 : 0)} ${t('active_accounts')}
             </span>
             ${hasFlow && !hideBalance ? `
             <span class="wallets-hero-pill-stat ${monthlyNet < 0 ? 'down' : 'up'}">
@@ -12608,9 +12663,9 @@ class WalletManager {
             </span>` : ''}
           </div>
           <div class="wallets-hero-actions">
-            <button type="button" class="wallets-hero-btn" id="btn-create-wallet">
+            <button type="button" class="wallets-hero-btn" id="btn-new-wallets">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-              <span data-i18n="new_wallet">${t('new_wallet')}</span>
+              <span>${window.i18n && window.i18n.currentLang === 'fa' ? 'کیف پول جدید' : 'New Wallet'}</span>
             </button>
             <button type="button" class="wallets-hero-btn" id="wallets-qa-transfer">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
@@ -12651,26 +12706,103 @@ class WalletManager {
           <div class="wallets-stack">${listHTML}</div>
         </div>
 
-        <!-- External wallet connection is separate from Walio's own account wallets. -->
-        <section class="external-crypto-wallet" id="walio-external-wallet" aria-labelledby="walio-external-wallet-title">
-          <div class="external-crypto-head">
-            <div class="external-crypto-mark" aria-hidden="true">◇</div>
-            <div class="external-crypto-heading">
-              <span class="external-crypto-kicker" id="walio-wallet-kicker">EXTERNAL WALLET</span>
-              <h2 id="walio-external-wallet-title">Wallets</h2>
-              <p id="walio-wallet-intro">Connect an existing self-custody wallet. Walio never creates or controls a wallet.</p>
+        <div id="walio-wallet-options" class="modal-overlay wallet-new-overlay" aria-hidden="true">
+          <div class="modal-sheet wallet-new-sheet" role="dialog" aria-modal="true" aria-labelledby="walio-wallet-sheet-title">
+            <div class="modal-sheet-header">
+              <h3 class="modal-title" id="walio-wallet-sheet-title">${window.i18n && window.i18n.currentLang === 'fa' ? 'کیف پول جدید' : 'New Wallets'}</h3>
+              <button type="button" class="btn-close-modal" id="walio-wallet-new-close" aria-label="${window.i18n && window.i18n.currentLang === 'fa' ? 'بستن' : 'Close'}">✕</button>
             </div>
+            <button type="button" class="wallet-new-back-link" id="walio-wallet-new-back" hidden>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+              <span>${window.i18n && window.i18n.currentLang === 'fa' ? 'بازگشت به انتخاب' : 'Back to choices'}</span>
+            </button>
+            <div class="wallet-new-sheet-intro" id="walio-wallet-choice-view">
+              <h4>${window.i18n && window.i18n.currentLang === 'fa' ? 'نوع کیف پول را انتخاب کنید' : 'Choose a wallet type'}</h4>
+              <div class="wallet-choice-grid">
+                <button type="button" class="wallet-choice-option" id="walio-choice-connect">
+                  <span class="wallet-choice-icon wallet-choice-icon-crypto" aria-hidden="true"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="3"/><path d="M3 10h18M7 14h4"/><path d="m15 14 1.5 1.5L20 12"/></svg></span>
+                  <span class="wallet-choice-copy"><strong>${window.i18n && window.i18n.currentLang === 'fa' ? 'اتصال کیف پول رمزارزی' : 'Connect crypto wallet'}</strong><small>${window.i18n && window.i18n.currentLang === 'fa' ? 'MetaMask یا WalletConnect' : 'MetaMask or WalletConnect'}</small></span>
+                  <span class="wallet-choice-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span>
+                </button>
+                <button type="button" class="wallet-choice-option" id="walio-choice-offline">
+                  <span class="wallet-choice-icon wallet-choice-icon-offline" aria-hidden="true"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="3"/><path d="M3 10h18M8 14h3"/><path d="M16.5 13v5m-2.5-2.5h5"/></svg></span>
+                  <span class="wallet-choice-copy"><strong>${window.i18n && window.i18n.currentLang === 'fa' ? 'ساخت کارت آفلاین' : 'Create offline card'}</strong><small>${window.i18n && window.i18n.currentLang === 'fa' ? 'ثبت و مدیریت دستی موجودی' : 'Track balances manually'}</small></span>
+                  <span class="wallet-choice-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span>
+                </button>
+              </div>
+            </div>
+            <form class="wallet-new-connect-view" id="walio-wallet-connect-form" hidden>
+              <div class="wallet-new-sheet-badge crypto" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="3"/><path d="M3 10h18M7 14h4"/></svg></div>
+              <h4>${window.i18n && window.i18n.currentLang === 'fa' ? 'اتصال کیف پول' : 'Connect wallet'}</h4>
+              <p class="wallet-new-connect-intro">${window.i18n && window.i18n.currentLang === 'fa' ? 'فقط موجودی عمومی خوانده می‌شود؛ هیچ تراکنشی امضا نمی‌شود.' : 'Public balances only. No transactions are signed.'}</p>
+              <div class="tool-input-row">
+                <label for="walio-wallet-label">${window.i18n && window.i18n.currentLang === 'fa' ? 'نام کیف پول' : 'Wallet name'}</label>
+                <input id="walio-wallet-label" name="walletLabel" class="tool-input" type="text" maxlength="40" required autocomplete="off" placeholder="${window.i18n && window.i18n.currentLang === 'fa' ? 'مثلاً کیف پول شخصی' : 'e.g. My MetaMask'}" />
+              </div>
+              <div class="tool-input-row">
+                <label for="walio-wc-project-id">${window.i18n && window.i18n.currentLang === 'fa' ? 'شناسه Reown (فقط برای WalletConnect)' : 'Reown ID (WalletConnect only)'}</label>
+                <input id="walio-wc-project-id" class="tool-input" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="${window.i18n && window.i18n.currentLang === 'fa' ? 'شناسه عمومی پروژه Reown' : 'Public Reown Project ID'}" />
+                <p class="external-wallet-config-caption">${window.i18n && window.i18n.currentLang === 'fa' ? 'دریافت شناسه:' : 'Get an ID:'} <a href="https://cloud.reown.com" target="_blank" rel="noopener noreferrer">cloud.reown.com</a>.</p>
+              </div>
+              <p class="external-wallet-status" id="walio-wallet-modal-status" role="status" aria-live="polite"></p>
+              <button type="submit" class="btn-primary-full" id="walio-wallet-connect">${window.i18n && window.i18n.currentLang === 'fa' ? 'اتصال کیف پول' : 'Connect Wallet'}</button>
+              <button type="button" class="wallet-new-cancel" id="walio-wallet-connect-cancel">${window.i18n && window.i18n.currentLang === 'fa' ? 'لغو' : 'Cancel'}</button>
+            </form>
           </div>
+        </div>
+
+        <!-- Connected external wallet details; independent from offline finance cards. -->
+        <section class="external-crypto-wallet" id="walio-external-wallet" hidden aria-label="Connected external crypto wallet">
           <div id="walio-external-wallet-body" aria-live="polite"></div>
         </section>
       </div>`;
 
     if (window.i18n) window.i18n.translateDOM();
 
-    [
-      container.querySelector('#btn-create-wallet'),
-      container.querySelector('.empty-create-wallet')
-    ].filter(Boolean).forEach(btn => btn.addEventListener('click', () => this.openEditWalletModal(null)));
+    const walletChooser = container.querySelector('#walio-wallet-options');
+    const openWalletChooser = () => {
+      if (!walletChooser) return;
+      walletChooser.classList.add('open');
+      walletChooser.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      const choiceView = container.querySelector('#walio-wallet-choice-view');
+      const connectView = container.querySelector('#walio-wallet-connect-form');
+      if (choiceView) choiceView.hidden = false;
+      if (connectView) connectView.hidden = true;
+      const back = container.querySelector('#walio-wallet-new-back');
+      if (back) back.hidden = true;
+      setTimeout(() => container.querySelector('#walio-wallet-new-close')?.focus(), 20);
+    };
+    [container.querySelector('#btn-new-wallets'), container.querySelector('.empty-create-wallet')]
+      .filter(Boolean).forEach(btn => btn.addEventListener('click', openWalletChooser));
+    const closeWalletChooser = () => {
+      if (walletChooser) { walletChooser.classList.remove('open'); walletChooser.setAttribute('aria-hidden', 'true'); }
+      if (!document.querySelector('.modal-overlay.open')) document.body.style.overflow = '';
+    };
+    const backWalletChooser = container.querySelector('#walio-wallet-new-back');
+    const choiceView = container.querySelector('#walio-wallet-choice-view');
+    const connectView = container.querySelector('#walio-wallet-connect-form');
+    if (backWalletChooser) backWalletChooser.addEventListener('click', () => {
+      if (connectView && !connectView.hidden) { connectView.hidden = true; if (choiceView) choiceView.hidden = false; backWalletChooser.hidden = true; }
+      else closeWalletChooser();
+    });
+    if (walletChooser) walletChooser.addEventListener('click', event => { if (event.target === walletChooser) closeWalletChooser(); });
+    const closeButton = container.querySelector('#walio-wallet-new-close');
+    if (closeButton) closeButton.addEventListener('click', closeWalletChooser);
+    const cancelConnect = container.querySelector('#walio-wallet-connect-cancel');
+    if (cancelConnect) cancelConnect.addEventListener('click', closeWalletChooser);
+    const connectChoice = container.querySelector('#walio-choice-connect');
+    if (connectChoice) connectChoice.addEventListener('click', () => {
+      if (choiceView) choiceView.hidden = true;
+      if (connectView) connectView.hidden = false;
+      if (backWalletChooser) backWalletChooser.hidden = false;
+      if (window.walioExternalWallet) window.walioExternalWallet.beginConnect();
+    });
+    const offlineChoice = container.querySelector('#walio-choice-offline');
+    if (offlineChoice) offlineChoice.addEventListener('click', () => {
+      closeWalletChooser();
+      this.openEditWalletModal(null);
+    });
 
     const privacyBtn = container.querySelector('#wallets-toggle-privacy');
     if (privacyBtn) {
@@ -12723,6 +12855,11 @@ class WalletManager {
         }
       });
     });
+
+    const walletSheet = container.querySelector('#walio-wallet-options');
+    const frame = document.querySelector('.mobile-frame');
+    const transactionSheet = document.getElementById('tx-modal-sheet');
+    if (walletSheet && frame) frame.insertBefore(walletSheet, transactionSheet || null);
   }
 
 
@@ -15580,6 +15717,10 @@ class WalioApp {
     wallets.forEach(wallet => {
       totalNetWorth += parseFloat(wallet.balance) || 0;
     });
+    const offlineNetWorth = totalNetWorth;
+    const externalSummary = window.walioExternalWallet?.getSummary?.() || null;
+    const externalToman = window.walioExternalWallet?.getContributionToman?.() || 0;
+    totalNetWorth += externalToman;
 
     transactions.forEach(tx => {
       const txDate = new Date(tx.date);
@@ -15654,7 +15795,8 @@ class WalioApp {
               <span class="home-balance-label" data-i18n="total_net_worth">${t('total_net_worth')}</span>
               <button class="home-privacy-btn" id="btn-toggle-privacy" type="button" aria-label="Toggle balance visibility">${eyeSVG}</button>
             </div>
-            <strong class="home-balance-value">${formatMoney(totalNetWorth)}</strong>
+            <strong class="home-balance-value" id="walio-home-total" data-base-balance="${offlineNetWorth}" data-hide-balance="${hideBalance ? '1' : '0'}">${formatMoney(totalNetWorth)}</strong>
+            <div class="external-wallet-total-summary home-external-wallet-summary" id="walio-home-crypto-summary" ${externalSummary?.address ? '' : 'hidden'}></div>
 
             ${hasFlowThisMonth && !hideBalance ? `
             <div class="home-balance-trend ${monthlyNet < 0 ? 'negative' : ''}">
@@ -17668,8 +17810,9 @@ window.addEventListener('DOMContentLoaded', () => {
 <script>
 /* ==================== External EVM wallet integration ====================
  * Uses EIP-1193 injected wallets and WalletConnect v2 (Reown Ethereum Provider).
- * Only public address, chain, and connector preference are persisted. Never ask
- * for, read, or store a seed phrase, private key, or wallet password.
+ * Only a public address, user-chosen display label, chain, public balance snapshot,
+ * and connector preference are persisted. Never ask for, read, or store a seed
+ * phrase, private key, or wallet password.
  */
 (function () {
   'use strict';
@@ -17704,33 +17847,92 @@ window.addEventListener('DOMContentLoaded', () => {
   const short=(a)=>a?`${a.slice(0,6)}…${a.slice(-4)}`:'';
   const esc=(s)=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const fmt=(n,d=6)=>new Intl.NumberFormat(isFa()?'fa-IR':'en-US',{maximumFractionDigits:d}).format(Number(n)||0);
-  function status(message,error){const n=el()?.querySelector('#walio-wallet-status');if(n){n.textContent=message||'';n.classList.toggle('error',!!error)}}
+  function status(message,error){[document.getElementById('walio-wallet-modal-status'),el()?.querySelector('#walio-wallet-status')].filter(Boolean).forEach(n=>{n.textContent=message||'';n.classList.toggle('error',!!error)})}
+  let pendingLabel='';
+  function getSummary(){return readSaved()}
+  function getContributionToman(){
+    const saved=readSaved();
+    if(!saved?.address||!Number.isFinite(Number(saved.totalUsd))||saved.usdComplete===false)return 0;
+    const rate=Number(window.currency?.getRate?.('USD')?.rate)||0;
+    return Number(saved.totalUsd)*rate;
+  }
+  function amountInToman(amount){return window.i18n?window.i18n.formatCurrency(amount,'IRT'):fmt(amount)+' Toman'}
+  function summaryText(saved){
+    if(!saved?.address)return '';
+    const label=saved.label||txt('External wallet','کیف پول خارجی');
+    if(saved.usdComplete===false)return `${label} · ${txt('USD valuation incomplete; excluded from total','قیمت‌گذاری دلاری کامل نیست؛ در جمع کل لحاظ نشده است')}`;
+    const usd=Number(saved.totalUsd)||0;
+    const toman=getContributionToman();
+    return `${label} · ≈ $${fmt(usd,2)} (${amountInToman(toman)})`;
+  }
+  function updateTotalSummaries(){
+    const saved=readSaved();
+    ['walio-portfolio-total','walio-home-total'].forEach(id=>{
+      const node=document.getElementById(id);if(!node)return;
+      const base=Number(node.dataset.baseBalance)||0;
+      const hide=node.dataset.hideBalance==='1';
+      node.textContent=hide?'••••••••':(window.i18n?window.i18n.formatCurrency(base+getContributionToman(),'IRT'):`${fmt(base+getContributionToman())} Toman`);
+    });
+    ['walio-portfolio-crypto-summary','walio-home-crypto-summary'].forEach(id=>{
+      const node=document.getElementById(id);if(!node)return;
+      const hide=node.closest('#tab-home,#tab-wallets')?.querySelector('[data-hide-balance="1"]');
+      node.hidden=!saved?.address;
+      node.textContent=saved?.address?(hide?txt('External crypto balance hidden','موجودی رمزارز متصل مخفی است'):summaryText(saved)):'';
+    });
+  }
+  function publishUpdate(){updateTotalSummaries();window.dispatchEvent(new CustomEvent('walio_external_wallet_updated',{detail:getSummary()}))}
+  function renderAssets(assets,totalUsd,complete=true){
+    const box=el();if(!box)return;
+    let hide=false;try{hide=!!window.storage?.getSettings?.().hideBalance}catch(e){}
+    const totalEl=box.querySelector('#walio-wallet-total');
+    if(totalEl)totalEl.textContent=hide?'••••••••':'≈ $'+fmt(totalUsd||0,2)+(complete?'':'+');
+    const assetEl=box.querySelector('#walio-wallet-assets');
+    if(assetEl)assetEl.innerHTML=(assets||[]).map(b=>`<div class="external-wallet-asset"><div class="external-wallet-asset-name">${esc(b.symbol)}${b.stable?' · '+txt('token','توکن'):''}</div><div class="external-wallet-asset-amount">${hide?'••••':(b.amount==null?txt('Unavailable','در دسترس نیست'):fmt(b.amount,6))}<span class="external-wallet-asset-usd">${hide?'••••':(b.usd==null?txt('USD quote unavailable','قیمت دلاری در دسترس نیست'):'≈ $'+fmt(b.usd,2))}</span></div></div>`).join('');
+  }
+  function closeWalletSheet(){
+    const modal=document.getElementById('walio-wallet-options');
+    if(modal){modal.classList.remove('open');modal.setAttribute('aria-hidden','true')}
+    if(!document.querySelector('.modal-overlay.open'))document.body.style.overflow='';
+  }
   function renderBase(){
-    const box=el(); if(!box)return;
-    let saved='';try{saved=localStorage.getItem(WC_ID_KEY)||''}catch(e){}
+    const box=el();if(!box)return;
+    const saved=readSaved();
     box.innerHTML=`<div class="external-wallet-connected" id="walio-wallet-card">
-      <div class="external-wallet-ident"><strong id="walio-wallet-address">${txt('No wallet connected','کیف پولی متصل نیست')}</strong><span id="walio-wallet-network">${txt('Connect an existing wallet','اتصال کیف پول موجود')}</span></div>
-      <div class="external-wallet-total" id="walio-wallet-total">—</div>
+      <div class="external-wallet-ident"><strong id="walio-wallet-address">${saved?.address?`${esc(saved.label||txt('External wallet','کیف پول خارجی'))} · ${short(saved.address)}`:txt('No external wallet connected','کیف پول رمزارزی متصل نیست')}</strong><span id="walio-wallet-network">${saved?.network?esc(saved.network):txt('Network pending','در انتظار شناسایی شبکه')}</span></div>
+      <div class="external-wallet-total" id="walio-wallet-total">${saved?.address?'—':' '}</div>
       <div class="external-wallet-assets" id="walio-wallet-assets"></div>
-      <div class="external-wallet-actions"><button type="button" class="external-wallet-btn" id="walio-wallet-connect">${txt('Connect Wallet','اتصال کیف پول')}</button><button type="button" class="external-wallet-btn secondary" id="walio-wallet-refresh" hidden>${txt('Refresh balance','به‌روزرسانی موجودی')}</button><button type="button" class="external-wallet-btn secondary" id="walio-wallet-disconnect" hidden>${txt('Disconnect Wallet','قطع اتصال کیف پول')}</button></div>
+      <div class="external-wallet-actions"><button type="button" class="external-wallet-btn secondary" id="walio-wallet-refresh" ${saved?.address?'':'hidden'}>${txt('Refresh balance','به‌روزرسانی موجودی')}</button><button type="button" class="external-wallet-btn secondary" id="walio-wallet-disconnect" ${saved?.address?'':'hidden'}>${txt('Disconnect Wallet','قطع اتصال کیف پول')}</button></div>
       <p class="external-wallet-status" id="walio-wallet-status" role="status"></p>
-      <div class="external-wallet-config"><input id="walio-wc-project-id" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="${txt('Optional: Reown / WalletConnect Project ID','اختیاری: شناسه پروژه Reown / WalletConnect')}" aria-label="WalletConnect Project ID" value="${esc(saved)}"><button type="button" id="walio-wc-save">${txt('Save ID','ذخیره شناسه')}</button></div>
-      <p class="external-wallet-footnote">${txt('MetaMask and other EIP-1193 wallets connect directly. WalletConnect needs a public Reown project ID from','اتصال مستقیم با MetaMask و کیف پول‌های EIP-1193 امکان‌پذیر است. WalletConnect به شناسه عمومی پروژه Reown نیاز دارد:')} <a href="https://cloud.reown.com" target="_blank" rel="noopener noreferrer">cloud.reown.com</a>. ${txt('Walio only reads public on-chain data; no signing or transfers.','والیو فقط داده‌های عمومی زنجیره را می‌خواند؛ امضا یا انتقالی انجام نمی‌شود.')}</p>
+      <p class="external-wallet-footnote">${txt('Read-only connection. Walio never creates a wallet, requests a recovery phrase, private key, or password, or signs/transfers assets.','اتصال فقط برای خواندن است. والیو کیف پول نمی‌سازد و عبارت بازیابی، کلید خصوصی یا رمز عبور نمی‌خواهد و تراکنشی امضا یا منتقل نمی‌کند.')}</p>
     </div>`;
-    box.querySelector('#walio-wallet-connect').addEventListener('click',connect);
     box.querySelector('#walio-wallet-refresh').addEventListener('click',()=>refresh(true));
     box.querySelector('#walio-wallet-disconnect').addEventListener('click',disconnect);
-    box.querySelector('#walio-wc-save').addEventListener('click',()=>{const id=box.querySelector('#walio-wc-project-id').value.trim();try{if(id)localStorage.setItem(WC_ID_KEY,id);else localStorage.removeItem(WC_ID_KEY)}catch(e){}status(id?txt('Project ID saved on this device.','شناسه پروژه در این دستگاه ذخیره شد.'):txt('Project ID cleared.','شناسه پروژه پاک شد.'))});
+    const form=document.getElementById('walio-wallet-connect-form');
+    if(form){
+      const label=form.querySelector('#walio-wallet-label'),project=form.querySelector('#walio-wc-project-id');
+      if(label&&saved?.label)label.value=saved.label;
+      try{if(project)project.value=localStorage.getItem(WC_ID_KEY)||''}catch(e){}
+      form.addEventListener('submit',event=>{
+        event.preventDefault();const name=label?.value.trim();if(!name){label?.focus();return}
+        pendingLabel=name;const id=project?.value.trim()||'';
+        try{if(id)localStorage.setItem(WC_ID_KEY,id);else localStorage.removeItem(WC_ID_KEY)}catch(e){}
+        connect();
+      });
+    }
+    const cancel=document.getElementById('walio-wallet-connect-cancel');
+    if(cancel)cancel.addEventListener('click',closeWalletSheet);
+    if(saved?.address)renderAssets(saved.assets||[],saved.totalUsd||0,saved.usdComplete!==false);
+    const section=document.getElementById('walio-external-wallet');if(section)section.hidden=!saved?.address;
   }
-  function renderState(address,chainId){
-    const box=el();if(!box)return;
-    const a=box.querySelector('#walio-wallet-address'),n=box.querySelector('#walio-wallet-network');
-    if(a)a.textContent=address?`${short(address)} · ${providerKind==='walletconnect'?'WalletConnect':txt('External wallet','کیف پول خارجی')}`:txt('No wallet connected','کیف پولی متصل نیست');
-    if(n)n.textContent=chainId?(CHAINS[String(chainId).toLowerCase()]?.name||`${txt('Network','شبکه')} ${chainId}`):txt('Connect an existing wallet','اتصال کیف پول موجود');
-    const connected=!!address;
-    const connectBtn=box.querySelector('#walio-wallet-connect'),refreshBtn=box.querySelector('#walio-wallet-refresh'),disc=box.querySelector('#walio-wallet-disconnect');
-    if(connectBtn)connectBtn.hidden=connected;if(refreshBtn)refreshBtn.hidden=!connected;if(disc)disc.hidden=!connected;
-    if(!connected){box.querySelector('#walio-wallet-total').textContent='—';box.querySelector('#walio-wallet-assets').innerHTML='';}
+  function beginConnect(){
+    const modal=document.getElementById('walio-wallet-options');
+    const choice=document.getElementById('walio-wallet-choice-view');
+    const form=document.getElementById('walio-wallet-connect-form');
+    const back=document.getElementById('walio-wallet-new-back');
+    if(modal){modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'}
+    status('');
+    if(choice)choice.hidden=true;if(form){form.hidden=false;const label=form.querySelector('#walio-wallet-label');if(label){label.value=readSaved()?.label||label.value||'';setTimeout(()=>label.focus(),220)}}
+    if(back)back.hidden=false;
   }
   async function wcConnect(projectId,restoreOnly=false){
     if(!projectId)throw new Error(txt('Add a Reown project ID below to use WalletConnect.','برای استفاده از WalletConnect شناسه پروژه Reown را در پایین وارد کنید.'));
@@ -17745,29 +17947,29 @@ window.addEventListener('DOMContentLoaded', () => {
     return wcProvider;
   }
   async function connect(){
-    if(busy)return;busy=true;const btn=el()?.querySelector('#walio-wallet-connect');if(btn){btn.disabled=true;btn.textContent=txt('Connecting…','در حال اتصال…')}
+    if(busy)return;busy=true;const btn=document.getElementById('walio-wallet-connect');if(btn){btn.disabled=true;btn.textContent=txt('Connecting…','در حال اتصال…')}
     try{
       let p=window.ethereum;
       if(p&&Array.isArray(p.providers)&&p.providers.length)p=p.providers.find(x=>x.isMetaMask)||p.providers[0];
       if(p&&typeof p.request==='function')providerKind='injected';
-      else {providerKind='walletconnect';let id='';try{id=localStorage.getItem(WC_ID_KEY)||''}catch(e){};const field=el()?.querySelector('#walio-wc-project-id');if(field?.value.trim()){id=field.value.trim();try{localStorage.setItem(WC_ID_KEY,id)}catch(e){}};p=await wcConnect(id)}
+      else {providerKind='walletconnect';let id='';try{id=localStorage.getItem(WC_ID_KEY)||''}catch(e){};const field=document.getElementById('walio-wc-project-id');if(field?.value.trim()){id=field.value.trim();try{localStorage.setItem(WC_ID_KEY,id)}catch(e){}};p=await wcConnect(id)}
       provider=p;
       const accounts=await provider.request({method:providerKind==='walletconnect'?'eth_accounts':'eth_requestAccounts'});
       if(!accounts||!accounts[0])throw new Error(txt('The wallet returned no account.','کیف پول حسابی برنگرداند.'));
       const chainId=await provider.request({method:'eth_chainId'});
-      attachEvents(provider);savePublic({address:accounts[0],chainId:String(chainId),kind:providerKind});renderState(accounts[0],chainId);status(txt('Connected. Reading on-chain balances…','متصل شد. در حال خواندن موجودی زنجیره…'));
-      await refresh(false);
+      attachEvents(provider);savePublic({address:accounts[0],chainId:String(chainId),kind:providerKind,label:pendingLabel||readSaved()?.label||txt('External wallet','کیف پول خارجی'),totalUsd:0,usdComplete:false,assets:[]});renderState(accounts[0],chainId);publishUpdate();status(txt('Connected. Reading on-chain balances…','متصل شد. در حال خواندن موجودی زنجیره…'));
+      await refresh(false);closeWalletSheet();
     }catch(e){const msg=e?.code===4001?txt('Connection was rejected in the wallet.','درخواست اتصال در کیف پول رد شد.'):txt(e?.message||'Wallet connection failed.','اتصال کیف پول ناموفق بود.');status(msg,true);if(providerKind==='walletconnect')provider=null}
-    finally{busy=false;const b=el()?.querySelector('#walio-wallet-connect');if(b){b.disabled=false;b.textContent=txt('Connect Wallet','اتصال کیف پول')} }
+    finally{busy=false;const b=document.getElementById('walio-wallet-connect');if(b){b.disabled=false;b.textContent=txt('Connect Wallet','اتصال کیف پول')} }
   }
   function attachEvents(p){
     if(!p||!p.on)return;
     p.removeListener?.('accountsChanged',onAccounts);p.removeListener?.('chainChanged',onChain);p.removeListener?.('disconnect',onProviderDisconnect);
     p.on('accountsChanged',onAccounts);p.on('chainChanged',onChain);p.on('disconnect',onProviderDisconnect);
   }
-  function onAccounts(accounts){if(!accounts||!accounts.length){renderState('',null);savePublic(null);status(txt('Wallet account disconnected.','حساب کیف پول قطع شد.'));return}const prior=readSaved()||{};savePublic({...prior,address:accounts[0]});renderState(accounts[0],prior.chainId);refresh(false)}
-  function onChain(chain){const prior=readSaved()||{};savePublic({...prior,chainId:String(chain)});renderState(prior.address,chain);refresh(false)}
-  function onProviderDisconnect(){provider=null;savePublic(null);renderState('',null);status(txt('Wallet disconnected.','کیف پول قطع شد.'))}
+  function onAccounts(accounts){if(!accounts||!accounts.length){savePublic(null);renderState('',null);publishUpdate();status(txt('Wallet account disconnected.','حساب کیف پول قطع شد.'));return}const prior=readSaved()||{};savePublic({...prior,address:accounts[0],totalUsd:0,usdComplete:false,assets:[]});renderState(accounts[0],prior.chainId);publishUpdate();refresh(false)}
+  function onChain(chain){const prior=readSaved()||{};savePublic({...prior,chainId:String(chain),totalUsd:0,usdComplete:false,assets:[]});renderState(prior.address,chain);publishUpdate();refresh(false)}
+  function onProviderDisconnect(){provider=null;savePublic(null);renderState('',null);publishUpdate();status(txt('Wallet disconnected.','کیف پول قطع شد.'))}
   function toHex(n){return '0x'+BigInt(n).toString(16)}
   async function rpc(p,method,params){return p.request({method,params})}
   async function rpcRead(network,method,params){const response=await fetch(network.rpc,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:Date.now(),method,params})});if(!response.ok)throw new Error('RPC HTTP '+response.status);const data=await response.json();if(data.error)throw new Error(data.error.message||'RPC request failed');return data.result}
@@ -17792,8 +17994,8 @@ window.addEventListener('DOMContentLoaded', () => {
       const [accounts,chainId]=await Promise.all([rpc(provider,'eth_accounts'),rpc(provider,'eth_chainId')]);
       if(!accounts?.[0])return;
       const addr=accounts[0],key=String(chainId).toLowerCase(),network=CHAINS[key]||null;
-      const prior=readSaved()||{};savePublic({...prior,address:addr,chainId:String(chainId),kind:providerKind});renderState(addr,chainId);
-      if(!network) { const nativeRaw=await rpc(provider,'eth_getBalance',[addr,'latest']); const amount=Number(BigInt(nativeRaw||'0x0'))/1e18; box.querySelector('#walio-wallet-assets').innerHTML=`<div class="external-wallet-asset"><div class="external-wallet-asset-name">${txt('Native coin','ارز بومی')}</div><div class="external-wallet-asset-amount">${fmt(amount,6)}<span class="external-wallet-asset-usd">${txt('Network not supported for USD pricing','قیمت دلاری شبکه پشتیبانی نمی‌شود')}</span></div></div>`;box.querySelector('#walio-wallet-total').textContent='—';status(txt('Connected. This network is not configured for token and price lookups.','متصل شد. این شبکه برای بررسی توکن و قیمت پیکربندی نشده است.'),true);return;}
+      const prior=readSaved()||{};const changedChain=prior.chainId&&String(prior.chainId).toLowerCase()!==String(chainId).toLowerCase();savePublic({...prior,address:addr,chainId:String(chainId),kind:providerKind,...(changedChain?{totalUsd:0,usdComplete:false,assets:[]}: {})});renderState(addr,chainId);
+      if(!network) { const nativeRaw=await rpc(provider,'eth_getBalance',[addr,'latest']); const amount=Number(BigInt(nativeRaw||'0x0'))/1e18; const assets=[{symbol:txt('Native coin','ارز بومی'),amount,usd:null,stable:false}];const current=readSaved()||{};savePublic({...current,address:addr,chainId:String(chainId),kind:providerKind,totalUsd:0,usdComplete:false,network:`${txt('Unsupported network','شبکه پشتیبانی‌نشده')} ${chainId}`,assets,updatedAt:Date.now()});renderAssets(assets,0,false);publishUpdate();status(txt('Connected. This network is not configured for token and USD-price lookups.','متصل شد. این شبکه برای بررسی توکن و قیمت دلاری پیکربندی نشده است.'),true);return;}
       const nativeRaw=await rpcRead(network,'eth_getBalance',[addr,'latest']);
       const native=Number(BigInt(nativeRaw||'0x0'))/1e18;
       const balances=[{symbol:network?.symbol||txt('Native coin','ارز بومی'),amount:native,priceKey:network?.priceId,stable:false}];
@@ -17802,15 +18004,14 @@ window.addEventListener('DOMContentLoaded', () => {
       const nativePrice=network?.priceId?Number(prices[network.priceId]?.usd)||null:null;
       let total=0,priced=true;
       balances.forEach(b=>{if(b.amount==null){priced=false;b.usd=null;return}b.price=b.stable?1:nativePrice;if(b.price==null){if(b.amount>0)priced=false;b.usd=null}else{b.usd=b.amount*b.price;total+=b.usd}});
-      const totalEl=box.querySelector('#walio-wallet-total');if(totalEl)totalEl.textContent=priced?'≈ $'+fmt(total,2):'≈ $'+fmt(total,2)+'+';
-      const assetEl=box.querySelector('#walio-wallet-assets');if(assetEl)assetEl.innerHTML=balances.map(b=>`<div class="external-wallet-asset"><div class="external-wallet-asset-name">${esc(b.symbol)}${b.stable?' · '+txt('token','توکن'):''}</div><div class="external-wallet-asset-amount">${b.amount==null?txt('Unavailable','در دسترس نیست'):fmt(b.amount,6)}<span class="external-wallet-asset-usd">${b.usd==null?txt('USD quote unavailable','قیمت دلاری در دسترس نیست'):'≈ $'+fmt(b.usd,2)}</div></div>`).join('');
+      const current=readSaved()||{};const snapshot={...current,address:addr,chainId:String(chainId),kind:providerKind,network:network.name,totalUsd:total,usdComplete:priced,assets:balances,updatedAt:Date.now()};savePublic(snapshot);renderAssets(balances,total,priced);publishUpdate();
       status(txt('Balance updated from the connected network.','موجودی از شبکه متصل به‌روزرسانی شد.')+(network?.tokens?.length?'':txt(' No USDT/USDC contracts are configured for this chain.',' قرارداد USDT/USDC برای این شبکه تعریف نشده است.')));
     }catch(e){status(txt('Could not read the wallet balance: ','خواندن موجودی کیف پول ممکن نشد: ')+(e?.message||''),true)}
   }
   async function disconnect(){
     const old=provider,kind=providerKind;provider=null;providerKind='';
     try{if(kind==='walletconnect'&&old?.disconnect)await old.disconnect()}catch(e){}
-    savePublic(null);renderState('',null);status(txt('Disconnected from Walio. Your wallet itself is unchanged.','اتصال به والیو قطع شد؛ خود کیف پول تغییری نکرده است.'));
+    savePublic(null);renderState('',null);const section=document.getElementById('walio-external-wallet');if(section)section.hidden=true;publishUpdate();status(txt('Disconnected from Walio. Your wallet itself is unchanged.','اتصال به والیو قطع شد؛ خود کیف پول تغییری نکرده است.'));
   }
   async function restore(){
     const saved=readSaved();if(!saved?.address)return;
@@ -17826,9 +18027,9 @@ window.addEventListener('DOMContentLoaded', () => {
       attachEvents(provider);const accounts=await rpc(provider,'eth_accounts');if(accounts?.[0]){renderState(accounts[0],await rpc(provider,'eth_chainId'));await refresh(false)}
     }catch(e){/* No auto prompt on page load; restore only an established session. */}
   }
-  function init(){renderBase();const saved=readSaved();if(saved?.address){renderState(saved.address,saved.chainId);status(txt('Restoring public wallet session…','در حال بازیابی نشست عمومی کیف پول…'));restore()}document.addEventListener('visibilitychange',()=>{if(!document.hidden&&provider)refresh(false)});const mount=()=>{if(!el())return;renderBase();const current=readSaved();if(provider&&current?.address){renderState(current.address,current.chainId);refresh(false)}else if(current?.address){renderState(current.address,current.chainId);restore()}};const tab=document.getElementById('tab-wallets');if(tab&&window.MutationObserver){new MutationObserver(records=>{if(records.some(r=>Array.from(r.addedNodes).some(n=>n.nodeType===1&&(n.id==='walio-external-wallet'||n.querySelector?.('#walio-external-wallet')))))mount()}).observe(tab,{childList:true,subtree:true})}window.addEventListener('walio_wallets_updated',()=>{});}
+  function init(){renderBase();const saved=readSaved();if(saved?.address&&el()){renderState(saved.address,saved.chainId);status(txt('Restoring public wallet session…','در حال بازیابی نشست عمومی کیف پول…'));restore()}document.addEventListener('visibilitychange',()=>{if(!document.hidden&&provider)refresh(false)});window.addEventListener('walio_currency_updated',updateTotalSummaries);const mount=()=>{if(!el())return;renderBase();updateTotalSummaries();const current=readSaved();if(provider&&current?.address){renderState(current.address,current.chainId);refresh(false)}else if(current?.address){renderState(current.address,current.chainId);restore()}};const tab=document.getElementById('tab-wallets');if(tab&&window.MutationObserver){new MutationObserver(records=>{if(records.some(r=>Array.from(r.addedNodes).some(n=>n.nodeType===1&&(n.id==='walio-external-wallet'||n.querySelector?.('#walio-external-wallet')))))mount()}).observe(tab,{childList:true,subtree:true})}window.addEventListener('walio_wallets_updated',()=>{});}
   document.addEventListener('DOMContentLoaded',init);
-  window.walioExternalWallet={refresh:()=>refresh(true),disconnect};
+  window.walioExternalWallet={refresh:()=>refresh(true),disconnect,beginConnect,getSummary,getContributionToman};
 })();
 </script>
 <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a31ab9567ef82362',t:'MTc4NzgzMDAxNA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a31bbbd58fd9a895',t:'MTc4Nzg0MDYwMg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a323cc45cd40d93d',t:'MTc4NzkyNTE2MQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a3b73dd5bcb999fb',t:'MTc4OTQ3MTIyMA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a3b7b9b30cb6d64d',t:'MTc4OTQ3NjI5Mw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a401f4f74f95be4c',t:'MTc5MDI1NDY2Nw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4026fc889e62419',t:'MTc5MDI1OTY5OA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
